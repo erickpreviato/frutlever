@@ -1,0 +1,91 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 13/05/2016, 08:30:18
+    Author     : Erick Previato <erick at icmc.usp.br>
+*/
+
+.navbar-nav {
+    height: 90px;
+}
+
+.navbar-custom-menu .navbar-nav li.dropdown {
+    height: 90px;
+}
+
+.navbar-nav li.dropdown > a {
+    line-height: 60px;
+    height: 90px;
+}
+
+.main-header .navbar .nav li a .label {
+    top: 30px;
+}
+
+
+.navbar .logo-lg {
+    padding-left: 15px;
+    position: relative;
+    top: 3px;
+}
+
+.navbar .logo-titulo {
+    padding-left: 15px;
+    font-size: 16px;
+    color: white;
+    display: none;
+}
+
+.content-login {
+    padding-top: 15px;
+    float: left;
+    width: 100%;
+}
+
+.user-header .image img {
+    width: 90px;
+}
+.user-menu .image {
+    position: relative;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    overflow: hidden;
+    padding-top: 0px;
+    display: block;
+    margin-top: 17px;
+}
+.navbar-nav .user-menu .user-image {
+    margin-top: -27px;
+}
+@media (min-width: 768px) {
+    .navbar .logo-titulo {
+        display: inline;
+    }
+    .user-menu .image {
+        position: absolute;
+        padding-top: 0px;
+        margin-top: 17px;
+    }
+    .navbar-nav .user-menu .user-image {
+        margin-top: -1px;
+    }
+}
+@media (min-width: 992px) {
+    .navbar .logo-titulo {
+        font-size: 20px;
+    }
+}
+.user-menu .user-header .image {
+    display: inline-block;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.2);
+    overflow: hidden;
+    width: 96px;
+    height: 106px;
+    position: relative;
+    padding-top: 0px;
+}

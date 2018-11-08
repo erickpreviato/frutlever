@@ -1,0 +1,98 @@
+<!--
+Copyright © 2018 EC.on Sistemas <contato@econsistemas.com.br>
+
+Este arquivo é parte do programa "Frutlever"
+
+Vagas é um software livre; você pode redistribuí-lo e/ou 
+modificá-lo dentro dos termos da Licença Pública Geral GNU como 
+publicada pela Fundação do Software Livre (FSF); na versão 3 da 
+Licença, ou (a seu critério) qualquer versão posterior.
+
+Este programa é distribuído na esperança de que possa ser  útil, 
+mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÃO
+a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
+Licença Pública Geral GNU para maiores detalhes.
+
+Você deve ter recebido uma cópia da Licença Pública Geral GNU junto
+com este programa, Se não, veja <http://www.gnu.org/licenses/>.
+-->
+<script>
+
+    //necessÃ¡rio porque os botÃµes sÃ£o criados sob demanda durante o carregamento ajax.
+    function rebindEvents() {
+        //console.log('Rebinding...');
+
+        $(".view").on('click', function () {
+            $("#addModal .modal-body").html('<center><img src="{URL}/view/img/Carregando.gif" /></center>');
+            $("#addModal").modal("show");
+            $.post("{PHP_SELF}", {view: $(this).val()}).done(function (data) {
+                $("#addModal").html(data);
+            });
+        });
+    }
+
+    $(document).ready(function () {
+
+        $(".table tr td button").tooltip();
+
+        $('.table').dataTable({
+            "columns": [
+                null,
+                null,
+                {"bSortable": false, "className": "text-center"}
+            ],
+            "order": [[0, "ASC"]], //definindo a coluna 2 = candidato como ordem inicial
+            "oLanguage": {
+                "sUrl": "{URL}/view/language/pt_BR.txt"
+            },
+            "bSortClasses": true,
+            "processing": true,
+            "serverSide": true,
+            "bDestroy": true,
+            //"displayStart": {DISPLAY_START},
+            "ajax": "{URL}/pais/list/list_ajax.php",
+            "fnDrawCallback": function (oSettings) {
+                //console.log( 'Reloging bind events!' );
+                rebindEvents();//necessÃ¡rio pois os botÃµes sÃ£o criados dinimicamente pelo ajax.
+            }
+        });
+
+        $('.dataTables_paginate').addClass("pagination");
+
+    });
+</script>
+
+<section class="content-header">
+    <h1>
+        Listagem de paises
+        <small>Frutlever</small>
+    </h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nome</th>
+                                <th class="text-center">A&ccedil;&atilde;o</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> 
