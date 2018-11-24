@@ -1,0 +1,39 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Nov 24, 2018, 10:23:45 AM
+    Author     : erick
+*/
+
+.btn-xs {
+    padding: .1rem .3rem;
+    font-size: .7rem;
+    line-height: 1.5;
+    border-radius: .2rem;
+}
+
+.header_msgs {
+    padding-top: 20px;
+    margin-bottom: -20px;
+}
+
+.table-acao {
+    max-width: 80px !important;
+    width: 80px !important;
+}
+
+.f-details {
+    padding: 3px 7px;
+    background: #eee;
+    border-radius: 3px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 0px 20px 0px 270px;
+}

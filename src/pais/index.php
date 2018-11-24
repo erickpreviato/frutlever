@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-include_once '../../conf/config.default.php';
+include_once '../conf/config.default.php';
 
 include_once MODEL_DIR . '/Pais.php';
 

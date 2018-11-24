@@ -91,14 +91,19 @@ class Pais extends DB_DataObject {
         return $tpl->get();
     }
 
-    function showForm() {
+    function showForm($id = null) {
 
         $tpl = new HTML_Template_Sigma(VIEW_DIR . '/pais');
         $pagina = 'form.tpl.html';
         $tpl->loadTemplateFile($pagina);
         
-        foreach ($this->table() as $key => $value) {
-            $tpl->setVariable(strtoupper($key), $this->$key);
+        if ($id) {
+            foreach ($this->table() as $key => $value) {
+                $tpl->setVariable(strtoupper($key), $this->$key);
+            }
+            $tpl->setVariable('TITULO', 'Alterar dados do país');
+        } else {
+            $tpl->setVariable('TITULO', 'Adicionar país');
         }
 
         $tpl->setVariable('URL', URL);
