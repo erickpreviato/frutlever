@@ -13,7 +13,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <link rel="icon" href="<?php //echo IMAGE_URL ?>/favicon.ico">
+        <link rel="icon" href="<?php //echo IMAGE_URL   ?>/favicon.ico">
 
         <title>Frtlever EC.on Sistemas</title>
         <!-- Tell the browser to be responsive to screen width -->
@@ -36,26 +36,26 @@
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body class="hold-transition skin-blue sidebar-mini">
+    <body>
 
 
-        <div class="modal" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="addModalLabel">T&iacute;tulo</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
                     </div>
                     <div class="modal-body">
                         ...
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary" id="salvar">Enviar</button>
+                        <button type="button" class="btn btn-primary">Enviar</button>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="header_msgs"><?php echo(show_message()); ?></div>
 
-
-        

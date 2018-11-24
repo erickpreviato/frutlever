@@ -1,0 +1,116 @@
+<!--
+Copyright © 2017 Seção Técnica de Informática - STI / ICMC <sti@icmc.usp.br>
+
+Este arquivo é parte do programa "Vagas"
+
+Vagas é um software livre; você pode redistribuí-lo e/ou 
+modificá-lo dentro dos termos da Licença Pública Geral GNU como 
+publicada pela Fundação do Software Livre (FSF); na versão 3 da 
+Licença, ou (a seu critério) qualquer versão posterior.
+
+Este programa é distribuído na esperança de que possa ser  útil, 
+mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÃO
+a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
+Licença Pública Geral GNU para maiores detalhes.
+
+                    Você deve ter recebido uma cópia da Licença Pública Geral GNU junto
+                    com este programa, Se não, veja <http://www.gnu.org/licenses/>.
+                    -->
+
+<script>
+$(document).ready(function () {
+
+                    <!-- BEGIN row_js -->
+$("#form-pais").on('submit', function () {
+
+                    var codigo = $("#inputCodigo").val();
+                    var sigla = $("#inputSigla").val();
+                    var nome = $("#inputNome").val();
+                            $.post("{PHP_SELF}", {codigoPais: codigo, siglaPais: sigla, nomePais: nome}).done(function (data) {                     if (data != 0) {             $(".pais").append('<option value="' + data + '">' + nome + '</option>');
+                            $("#{SELECT_ALTERADO} option:last").attr("selected", "selected");
+                    $("#addModal").modal("hide");
+                            $("#addModalMsg .modal-title").html('
+                    <label class="text-success"><b>SUCESSO</b></label>'
+                    );
+                    $("#addModalMsg .modal-body").html('<p><b>Sucesso!</b> Registro adicionado com sucesso.</p>');
+                    $("#addModalMsg").modal("show");
+            } else {
+                    $("#addModal").modal("hide");
+                    $("#addModalMsg .modal-title").html('<label class="text-danger"><b>ALERTA</b></label>');
+                    $("#addModalMsg .modal-body").html('<p><b>Erro!</b> Registro não pode ser adicionado.</p>');
+                    $("#addModalMsg").modal("show");
+                    }
+                    });
+                    return false;
+                    });
+                    <!-- END row_js -->
+
+                    $("#inputNome").blur(function () {
+                    if ($("input[name=ID]").val() == "") {
+            $.post("{PHP_SELF}", {pais: $("#inputNome").val(), existePais: true}).done(function (data) {
+                    if (data != 0) {
+            $(".has-warning").removeClass('hide');
+                    } else {
+                    $(".has-warning").addClass('hide');
+                    }
+                    });
+                    }
+                    });
+
+                    $(".badge").css('cursor', 'default');
+                    $(".badge").hover(function () {
+                    $(this).popover('show');
+                    }, function () {
+                    $(this).popover('hide');
+        });
+
+        $("#inputCodigo").focus();
+    });
+
+</script>
+
+<!-- Main content -->
+<form action="{PHP_SELF}" method="POST">
+    <input type="hidden" name="id" value="{ID}" />
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <p><span class="text-danger"><b>*</b></span> Campos obrigatórios</p>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="inputCodigo">C&oacute;digo </label>
+                    <span data-toggle="popover" data-placement="left" data-content="Não obrigatório. Código" class="badge pull-right">?</span>
+                    <input type="text" class="form-control" id="inputCodigo" name="codigo" value="{CODIGO}"   />
+                </div>
+
+                <div class="form-group">
+                    <label for="inputNome">Nome da país <span class="text-danger"><b>*</b></span></label>
+                    <span data-toggle="popover" data-placement="left" data-content='Nome completo do país, sujeito a aprovação' class="badge pull-right">?</span>
+                    <input type="text" class="form-control" id="inputNome" name="nome" value="{NOME}"  required="required"  />
+                </div>
+
+                <div class="form-group has-warning hide">
+                    <p class="text-yellow"><span><b>ALERTA!</b></span> Esse pais j&aacute; consta em nossa base de dados.</p>
+                </div>
+
+                <!-- BEGIN row_form -->
+                <div class="form-group">
+                    <label for="inputStatus">Selecione o status: <span class="text-danger"><b>*</b></span></label>
+                    <select class="form-control" name="status" >
+                        <option value="">Selecione</option>
+                        <option {STATUS_A} name="status" value="A">Ativo</option>
+                        <option {STATUS_I} name="status" value="I">Inativo</option>
+                        <option {STATUS_P} name="status" value="P">Pendente</option>
+                    </select>
+                </div>
+                <!-- END row_form -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary" name="salvar" value="salvar">Salvar</button>
+            </div>
+        </div>
+    </div>
+</form>

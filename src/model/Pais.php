@@ -57,7 +57,7 @@ class Pais extends DB_DataObject {
 
             $c[] = $this->codigo;
             $c[] = $this->nome;
-            $c[] = 'acao';
+            $c[] = $this->get_buttons($this->id);
 
             $ret['data'][] = $c;
         }
@@ -68,15 +68,84 @@ class Pais extends DB_DataObject {
 
             return json_encode($ret);
         } else {
-            unset($c);
+            unset($ret);
+            $ret = array('draw' => 0, 'data' => []);
             $ret['recordsTotal'] = $total;
-            $ret['recordsFiltered'] = $registros;
-            $c[] = '';
-            $c[] = 'total='.$total.' registros='.$registros;
-            $c[] = '';
-            $ret['data'][] = $c;
+            $ret['recordsFiltered'] = 0;
+            //$ret['data'][] = ;
             return json_encode($ret);
         }
     }
 
+    function get_buttons($ID) {
+
+        $tpl = new HTML_Template_Sigma(VIEW_DIR . '/pais');
+        $pagina = 'buttons.tpl.html';
+        $tpl->loadTemplateFile($pagina);
+
+        $tpl->setVariable('ID', $ID);
+
+        $tpl->setVariable('URL', URL);
+        $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);
+
+        return $tpl->get();
+    }
+
+    function showForm() {
+
+        $tpl = new HTML_Template_Sigma(VIEW_DIR . '/pais');
+        $pagina = 'form.tpl.html';
+        $tpl->loadTemplateFile($pagina);
+        
+        foreach ($this->table() as $key => $value) {
+            $tpl->setVariable(strtoupper($key), $this->$key);
+        }
+
+        $tpl->setVariable('URL', URL);
+        $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);
+
+        return $tpl->get();
+    }
+    
+    function showView() {
+
+        $tpl = new HTML_Template_Sigma(VIEW_DIR . '/pais');
+        $pagina = 'details.tpl.html';
+        $tpl->loadTemplateFile($pagina);
+        
+        foreach ($this->table() as $key => $value) {
+            $tpl->setVariable(strtoupper($key), $this->$key);
+        }
+
+        $tpl->setVariable('URL', URL);
+        $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);
+
+        return $tpl->get();
+    }
+    
+    function showDelete() {
+
+        $tpl = new HTML_Template_Sigma(VIEW_DIR . '/pais');
+        $pagina = 'delete.tpl.html';
+        $tpl->loadTemplateFile($pagina);
+        
+        foreach ($this->table() as $key => $value) {
+            $tpl->setVariable(strtoupper($key), $this->$key);
+        }
+
+        $tpl->setVariable('URL', URL);
+        $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);
+
+        return $tpl->get();
+    }
+
+    public function set_dados($post) {
+        foreach ($this->table() as $key => $value) {
+            foreach ($post as $key_post => $value_post) {
+                if ($key = $key_post) {
+                    $this->$key = (isset($post[$key_post]) ? $post[$key_post] : $this->$key);
+                }
+            }
+        }
+    }
 }
