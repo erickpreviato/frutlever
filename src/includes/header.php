@@ -10,16 +10,16 @@
         <title>Frutlever</title>
 
         <!-- Bootstrap core CSS -->
-        <link href="<?php echo CSS_URL;?>/bootstrap.css" rel="stylesheet">
-        <link href="<?php echo CSS_URL;?>/bootstrap.econ.css" rel="stylesheet">
-        <link rel="stylesheet" href="<?php echo CSS_URL;?>/all.min.css">
-        <link rel="stylesheet" href="<?php echo CSS_URL;?>/datepicker.css">
-        <link rel="stylesheet" href="<?php echo CSS_URL;?>/dataTables.bootstrap4.min.css">
-        <link rel="stylesheet" href="<?php echo CSS_URL;?>/responsive.bootstrap4.min.css">
-        <link rel="stylesheet" href="<?php echo CSS_URL;?>/select2.css">
+        <link href="<?php echo CSS_URL; ?>/bootstrap.css" rel="stylesheet">
+        <link href="<?php echo CSS_URL; ?>/bootstrap.econ.css" rel="stylesheet">
+        <link rel="stylesheet" href="<?php echo CSS_URL; ?>/all.min.css">
+        <link rel="stylesheet" href="<?php echo CSS_URL; ?>/datepicker.css">
+        <link rel="stylesheet" href="<?php echo CSS_URL; ?>/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet" href="<?php echo CSS_URL; ?>/responsive.bootstrap4.min.css">
+        <link rel="stylesheet" href="<?php echo CSS_URL; ?>/select2.css">
 
         <!-- Custom styles for this template -->
-        <link href="<?php echo CSS_URL;?>/dashboard.css" rel="stylesheet">
+        <link href="<?php echo CSS_URL; ?>/dashboard.css" rel="stylesheet">
         <style type="text/css">/* Chart.js */
             @-webkit-keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}
             @keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}
@@ -28,14 +28,14 @@
                 animation:chartjs-render-animation 0.001s;
             }
         </style>
-        
-        <script src="<?php echo JS_URL;?>/jquery-3.3.1.min.js"></script>
+
+        <script src="<?php echo JS_URL; ?>/jquery-3.3.1.min.js"></script>
     </head>
 
     <body>
         <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
             <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">FRUTLEVER</a>
-            
+
             <ul class="navbar-nav px-3">
                 <li class="nav-item text-nowrap">
                     <a class="nav-link" href="#">Sair</a>
@@ -49,39 +49,39 @@
                     <div class="sidebar-sticky">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link active" href="<?php echo URL;?>">
+                                <a class="nav-link active" href="<?php echo URL; ?>">
                                     <i class="fa fa-home"></i>
                                     Dashboard <span class="sr-only">(current)</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="<?php echo URL;?>/pais">
+                                <a class="nav-link" href="<?php echo URL; ?>/pais">
                                     <i class="fa fa-globe"></i>
                                     País
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="<?php echo URL;?>/estado">
+                                <a class="nav-link" href="<?php echo URL; ?>/estado">
                                     <i class="fa fa-map"></i>
                                     Estado
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="<?php echo URL;?>/cidade">
+                                <a class="nav-link" href="<?php echo URL; ?>/cidade">
                                     <i class="fa fa-hotel"></i>
                                     Cidade
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="<?php echo URL;?>/endereco">
-                                    <i class="fa fa-bus"></i>
-                                    Endereço
+                                <a class="nav-link" href="<?php echo URL; ?>/unidade">
+                                    <i class="fa fa-calculator"></i>
+                                    Unidade
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
-                                    Integrations
+                                <a class="nav-link" href="<?php echo URL; ?>/grupo">
+                                    <i class="fa fa-users"></i>
+                                    Grupos
                                 </a>
                             </li>
                         </ul>
@@ -150,8 +150,8 @@
                             <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
                         </div>                            
                     </div>
-                    
-                    
+
+
                     <div class="header_msgs"><?php echo(show_message()); ?></div>
-                        
+
                     <div class="d-flex justify-content-between flex-wrap align-items-center pt-3 pb-2 mb-3 border-bottom">

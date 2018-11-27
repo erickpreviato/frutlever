@@ -7,30 +7,30 @@
  */
 
 if (isset($_POST['new'])) {
-    $cidade = new Cidade();
-    echo $cidade->showForm();
+    $unidade = new Unidade();
+    echo $unidade->showForm();
     die();
 }
 
 if (isset($_POST['edit'])) {
-    $cidade = new Cidade();
-    $cidade->get($_POST['edit']);
-    echo $cidade->showForm($cidade->id);
+    $unidade = new Unidade();
+    $unidade->get($_POST['edit']);
+    echo $unidade->showForm($unidade->id);
     die();
 }
 
 if (isset($_POST['salvar'])) {
 
-    $cidade = new Cidade();
+    $unidade = new Unidade();
 
     $insert = (isset($_POST{'id'}) && $_POST['id'] > 0) ? false : true;
     if (!$insert)
-        $cidade->get($_POST['id']);
+        $unidade->get($_POST['id']);
 
-    $cidade->set_dados($_POST);
+    $unidade->set_dados($_POST);
 
     if ($insert) {
-        $id = $cidade->insert();
+        $id = $unidade->insert();
         if ($id) {
             $_SESSION['t'] = 'success';
             $_SESSION['msg'] = 'Inseriu';
@@ -39,7 +39,7 @@ if (isset($_POST['salvar'])) {
             $_SESSION['msg'] = 'Não Inseriu';
         }
     } else {
-        $id = $cidade->update();
+        $id = $unidade->update();
         if ($id) {
             $_SESSION['t'] = 'success';
             $_SESSION['msg'] = 'Alterou';
@@ -53,16 +53,16 @@ if (isset($_POST['salvar'])) {
 }
 
 if (isset($_POST['view'])) {
-    $cidade = new Cidade();
-    $cidade->get($_POST['view']);
-    echo $cidade->showView();
+    $unidade = new Unidade();
+    $unidade->get($_POST['view']);
+    echo $unidade->showView();
     die();
 }
 
 if (isset($_POST['del'])) {
-    $cidade = new Cidade();
-    $cidade->get($_POST['del']);
-    echo $cidade->showDelete();
+    $unidade = new Unidade();
+    $unidade->get($_POST['del']);
+    echo $unidade->showDelete();
     die();
 }
 
@@ -77,8 +77,8 @@ if (isset($_POST['find_exists'])) {
 
     $find = $_POST['find_exists'];
 
-    $cidade = new Cidade();
-    $cidade->whereAdd('nome like "' . $find . '"');
-    echo $cidade->count();
+    $unidade = new Unidade();
+    $unidade->whereAdd('nome like "' . $find . '"');
+    echo $unidade->count();
     die();
 }

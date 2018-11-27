@@ -13,7 +13,7 @@ class Estado extends DB_DataObject {
     public $id;                             // int(4) primary_key not_null
     public $nome;                           // varchar(100)
     public $sigla;                          // varchar(2)
-    public $estado_id;                        // int(4) not_null
+    public $pais_id;                        // int(4) not_null
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE

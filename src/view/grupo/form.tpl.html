@@ -56,24 +56,14 @@ Licença Pública Geral GNU para maiores detalhes.
 
                 <div class="form-group">
                     <div class="d-flex align-items-center justify-content-between">
-                        <label for="inputNome">Nome da cidade <span class="text-danger"><b>*</b></span></label>
-                        <span data-toggle="popover" data-placement="left" data-content='Nome completo do estado, sujeito a aprovação' class="pop"><i class="fa fa-question-circle"></i></span>
+                        <label for="inputGrupo">Descrição <span class="text-danger"><b>*</b></span></label>
+                        <span data-toggle="popover" data-placement="left" data-content='Descrição, sujeito a aprovação' class="pop"><i class="fa fa-question-circle"></i></span>
                     </div>
-                    <input type="text" class="form-control" id="inputNome" name="nome" value="{NOME}"  required="required"  />
-                </div>
-
-                <div class="form-group">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <label for="inputEstado">Estado <span class="text-danger"><b>*</b></span></label>
-                        <span data-toggle="popover" data-placement="left" data-content='Selecione o estado' class="pop"><i class="fa fa-question-circle"></i></span>
-                    </div>
-                    <select class="form-control" id="inputPais" name="estado_id">
-                        {OPTION_ESTADOS}
-                    </select>
+                    <input type="text" class="form-control" id="inputGrupo" name="descricao" value="{DESCRICAO}"  required="required"  />
                 </div>
 
                 <div class="form-group has-warning d-none">
-                    <p class="text-warning"><b>ALERTA!</b> Esse estado j&aacute; consta em nossa base de dados.</p>
+                    <p class="text-warning"><b>ALERTA!</b> Esse grupo j&aacute; consta em nossa base de dados.</p>
                 </div>
 
             </div>
