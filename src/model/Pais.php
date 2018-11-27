@@ -153,4 +153,35 @@ class Pais extends DB_DataObject {
             }
         }
     }
+    
+    public static function get_pais($id = null, $field = null) {
+        $pais = new Pais();
+        $pais->get($id);
+        return $pais->$field;
+    }
+    
+    public static function get_option_pais ($id = null) {
+    
+        $tpl = new HTML_Template_Sigma(VIEW_DIR . '/pais');
+        $pagina = 'option.tpl.html';
+        $tpl->loadTemplateFile($pagina);
+        
+        $pais = new Pais();
+        $pais->orderBy('nome', 'ASC');
+        $pais->find();
+        
+        while ($pais->fetch()) {
+            $tpl->setVariable('VALUE', $pais->id);
+            $tpl->setVariable('NAME', $pais->nome);
+            $tpl->setVariable('SELECTED', $pais->id == $id ? 'selected=selected' : '');
+            
+            $tpl->parse('option');
+        }
+
+        $tpl->setVariable('URL', URL);
+        $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);
+
+        return $tpl->get();
+        
+    }
 }

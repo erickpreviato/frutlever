@@ -37,7 +37,7 @@ Licença Pública Geral GNU para maiores detalhes.
             $(this).popover('hide');
         });
 
-        $("#inputCodigo").focus();
+        $("#inputSigla").focus();
     });
 
 </script>
@@ -55,22 +55,32 @@ Licença Pública Geral GNU para maiores detalhes.
                 <p><span class="text-danger"><b>*</b></span> Campos obrigatórios</p>
                 <div class="form-group">
                     <div class="d-flex align-items-center justify-content-between">
-                        <label for="inputCodigo">C&oacute;digo </label>
-                        <span data-toggle="popover" data-placement="left" data-content="Não obrigatório. Código" class="pop"><i class="fa fa-question-circle"></i></span>
+                        <label for="inputSigla">Sigla </label>
+                        <span data-toggle="popover" data-placement="left" data-content="Não obrigatório. Sigla" class="pop"><i class="fa fa-question-circle"></i></span>
                     </div>
-                    <input type="text" class="form-control" id="inputCodigo" name="codigo" value="{CODIGO}"   />
+                    <input type="text" class="form-control" id="inputSigla" name="sigla" value="{SIGLA}"   />
                 </div>
 
                 <div class="form-group">
                     <div class="d-flex align-items-center justify-content-between">
-                        <label for="inputNome">Nome da país <span class="text-danger"><b>*</b></span></label>
-                        <span data-toggle="popover" data-placement="left" data-content='Nome completo do país, sujeito a aprovação' class="pop"><i class="fa fa-question-circle"></i></span>
+                        <label for="inputNome">Nome da estado <span class="text-danger"><b>*</b></span></label>
+                        <span data-toggle="popover" data-placement="left" data-content='Nome completo do estado, sujeito a aprovação' class="pop"><i class="fa fa-question-circle"></i></span>
                     </div>
                     <input type="text" class="form-control" id="inputNome" name="nome" value="{NOME}"  required="required"  />
                 </div>
 
+                <div class="form-group">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <label for="inputPais">País <span class="text-danger"><b>*</b></span></label>
+                        <span data-toggle="popover" data-placement="left" data-content='Selecione o país' class="pop"><i class="fa fa-question-circle"></i></span>
+                    </div>
+                    <select class="form-control" id="inputPais" name="pais_id">
+                        {OPTION_PAISES}
+                    </select>
+                </div>
+
                 <div class="form-group has-warning d-none">
-                    <p class="text-warning"><b>ALERTA!</b> Esse pais j&aacute; consta em nossa base de dados.</p>
+                    <p class="text-warning"><b>ALERTA!</b> Esse estado j&aacute; consta em nossa base de dados.</p>
                 </div>
 
             </div>
