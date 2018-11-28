@@ -170,4 +170,35 @@ class Cidade extends DB_DataObject
             }
         }
     }
+    
+    public static function get_cidade($id = null, $field = null) {
+        $obj = new Cidade();
+        $obj->get($id);
+        return $obj->$field;
+    }
+    
+    public static function get_option_cidades ($id = null) {
+    
+        $tpl = new HTML_Template_Sigma(VIEW_DIR . '/cidade');
+        $pagina = 'option.tpl.html';
+        $tpl->loadTemplateFile($pagina);
+        
+        $obj = new Cidade();
+        $obj->orderBy('nome', 'ASC');
+        $obj->find();
+        
+        while ($obj->fetch()) {
+            $tpl->setVariable('VALUE', $obj->id);
+            $tpl->setVariable('NAME', $obj->nome);
+            $tpl->setVariable('SELECTED', $obj->id == $id ? 'selected=selected' : '');
+            
+            $tpl->parse('option');
+        }
+
+        $tpl->setVariable('URL', URL);
+        $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);
+
+        return $tpl->get();
+        
+    }
 }

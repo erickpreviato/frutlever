@@ -1,0 +1,202 @@
+<!--
+Copyright © 2017 Seção Técnica de Informática - STI / ICMC <sti@icmc.usp.br>
+
+Este arquivo é parte do programa "Vagas"
+
+Vagas é um software livre; você pode redistribuí-lo e/ou 
+modificá-lo dentro dos termos da Licença Pública Geral GNU como 
+publicada pela Fundação do Software Livre (FSF); na versão 3 da 
+Licença, ou (a seu critério) qualquer versão posterior.
+
+Este programa é distribuído na esperança de que possa ser  útil, 
+mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÃO
+a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
+Licença Pública Geral GNU para maiores detalhes.
+
+                    Você deve ter recebido uma cópia da Licença Pública Geral GNU junto
+                    com este programa, Se não, veja <http://www.gnu.org/licenses/>.
+-->
+
+<script>
+    $(document).ready(function () {
+
+        $("#inputNome").blur(function () {
+            $.post("{PHP_SELF}", {find_exists: $("#inputNome").val()}).done(function (data) {
+                if (data == 0) {
+                    $(".has-warning").addClass('d-none');
+                } else {
+                    $(".has-warning").removeClass('d-none');
+                }
+            });
+        });
+
+
+        $(".pop").hover(function () {
+            $(this).popover('show');
+        }, function () {
+            $(this).popover('hide');
+        });
+
+        $("#inputSigla").focus();
+    });
+
+</script>
+
+<!-- Main content -->
+<form action="{PHP_SELF}" method="POST">
+    <input type="hidden" name="id" value="{ID}" />
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{TITULO}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <p><span class="text-danger"><b>*</b></span> Campos obrigatórios</p>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <label for="inputCNPJ">CNPJ <span class="text-danger"><b>*</b></span></label>
+                            <span data-toggle="popover" data-placement="left" data-content='CNPJ do fornecedor caso haja' class="pop"><i class="fa fa-question-circle"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="inputCNPJ" name="cnpj" value="{CNPJ}"  required="required"  />
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <label for="inputCPF">CPF <span class="text-danger"><b>*</b></span></label>
+                            <span data-toggle="popover" data-placement="left" data-content='CPF do fornecedor, se não houver CNPJ' class="pop"><i class="fa fa-question-circle"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="inputCPF" name="cpf" value="{CPF}"   />
+                    </div>               
+                </div>
+
+                <div class="form-group">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <label for="inputRazaoSocial">Razão Social <span class="text-danger"><b>*</b></span></label>
+                        <span data-toggle="popover" data-placement="left" data-content='Razão Social do fornecedor' class="pop"><i class="fa fa-question-circle"></i></span>
+                    </div>
+                    <input type="text" class="form-control" id="inputRazaoSocial" name="razao_social" value="{RAZAO_SOCIAL}"  />
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <label for="inputInscricao">Inscrição Estadual </label>
+                            <span data-toggle="popover" data-placement="left" data-content='IE caso haja' class="pop"><i class="fa fa-question-circle"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="inputIE" name="inscricao" value="{INSCRICAO}"   />
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <label for="inputRG">RG </label>
+                            <span data-toggle="popover" data-placement="left" data-content='RG não obrigatório (pessoa física)' class="pop"><i class="fa fa-question-circle"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="inputRG" name="rg" value="{RG}" />
+                    </div>               
+                </div>
+
+                <div class="form-group">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <label for="inputEmail">e-mail <span class="text-danger"><b>*</b></span></label>
+                        <span data-toggle="popover" data-placement="left" data-content='e-mail completo' class="pop"><i class="fa fa-question-circle"></i></span>
+                    </div>
+                    <input type="text" class="form-control" id="inputEmail" name="email" value="{EMAIL}"  required="required"  />
+                </div>
+
+
+                <div class="form-group">
+                    <label for="inputInformacoes">Informações</label>
+                    <textarea class="form-control" id="inputInformacoes" name="informacoes" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputLogo">Logo </label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputLogo" name="logo">
+                        <label class="custom-file-label" for="customFile">Arquivo</label>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- ENDERECO -->
+
+            <div class="modal-header">
+                <h5 class="modal-title">Endereço</h5>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="inputTipo">Tipo <span class="text-danger"><b>*</b></span></label>
+                        <span data-toggle="popover" data-placement="left" data-content='Selecione o tipo de endereço' class="pop"><i class="fa fa-question-circle"></i></span>
+                        <select class="form-control" id="inputTipo" name="tipo">
+                            <option>Selecione</option>
+                            <option value='1'>Residêncial</option>
+                            <option value='2'>Rural</option>
+                            <option value='3'>Comercial</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-10">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <label for="inputLogradouro">Endereço <span class="text-danger"><b>*</b></span></label>
+                            <span data-toggle="popover" data-placement="left" data-content='Endereço do fornecedor' class="pop"><i class="fa fa-question-circle"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="inputLogradouro" name="logradouro" value="{LOGRADOURO}"  />
+                    </div>
+
+                    <div class="form-group col-md-2">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <label for="inputNumero">Número <span class="text-danger"><b>*</b></span></label>
+                            <span data-toggle="popover" data-placement="left" data-content='Número' class="pop"><i class="fa fa-question-circle"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="inputNumero" name="numero" value="{NUMERO}"  />
+                    </div>
+
+
+                </div>
+
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <label for="inputLatitude">Latitude <span class="text-danger"><b>*</b></span></label>
+                            <span data-toggle="popover" data-placement="left" data-content='Latitude' class="pop"><i class="fa fa-question-circle"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="inputLatitude" name="latitude" value="{LATITUDE}"  required="required"  />
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <label for="inputLongitude">Longitude <span class="text-danger"><b>*</b></span></label>
+                            <span data-toggle="popover" data-placement="left" data-content='Longitude' class="pop"><i class="fa fa-question-circle"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="inputLongitude" name="longitude" value="{LONGITUDE}"   />
+                    </div>               
+                </div>
+
+
+                <div class="form-group">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <label for="inputCidade">Cidade <span class="text-danger"><b>*</b></span></label>
+                        <span data-toggle="popover" data-placement="left" data-content='Selecione a cidade' class="pop"><i class="fa fa-question-circle"></i></span>
+                    </div>
+                    <select class="form-control" id="inputCidade" name="cidade_id">
+                        {OPTION_CIDADES}
+                    </select>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-sm btn-primary" name="salvar" value="salvar">Salvar</button>
+                </div>
+            </div>
+        </div>
+</form>
