@@ -20,34 +20,40 @@ if (isset($_POST['edit'])) {
 }
 
 if (isset($_POST['salvar'])) {
-
-    $fornecedor = new Fornecedor();
-
-    $insert = (isset($_POST{'id'}) && $_POST['id'] > 0) ? false : true;
-    if (!$insert)
-        $fornecedor->get($_POST['id']);
-
-    $fornecedor->set_dados($_POST);
-
-    if ($insert) {
-        $id = $fornecedor->insert();
-        if ($id) {
-            $_SESSION['t'] = 'success';
-            $_SESSION['msg'] = 'Inseriu';
-        } else {
-            $_SESSION['t'] = 'erro';
-            $_SESSION['msg'] = 'Não Inseriu';
-        }
+    
+    //Checar cidade
+    $cidade = new Cidade();
+    $cidade->setestado_id($_POST['estado_id']);
+    $cidade->setnome($_POST['cidade']);
+    if ($cidade->find()) {
+        $cidade->fetch();
+        $idCidade = $cidade->getid();
     } else {
-        $id = $fornecedor->update();
-        if ($id) {
-            $_SESSION['t'] = 'success';
-            $_SESSION['msg'] = 'Alterou';
-        } else {
-            $_SESSION['t'] = 'erro';
-            $_SESSION['msg'] = 'Não Alterou';
-        }
+        $idCidade = $cidade->insert();
     }
+        
+    //Cadastrar endereco antes de salvar
+    $endereco = new Endereco();
+    $endereco->set_dados($_POST);
+    $endereco->setcidade_id($idCidade);
+    $idEndereco = $endereco->insert();
+
+    $dados = new Dados();
+    $dados->set_dados($_POST);
+    $dados->setendereco_id($idEndereco);
+    $idDados = $dados->insert();
+    
+    $fornecedor = new Fornecedor();
+    $fornecedor->setdados_id($idDados);
+
+    if ($fornecedor->insert()) {
+        $_SESSION['t'] = 'success';
+        $_SESSION['msg'] = 'Inseriu';
+    } else {
+        $_SESSION['t'] = 'erro';
+        $_SESSION['msg'] = 'Não Inseriu';
+    }
+    
     header('location: ./');
     die();
 }

@@ -1,11 +1,11 @@
                 </div>
+                <footer class="footer">
+                    <div class="d-flex align-items-end flex-wrap justify-content-between">
+                        <p>Copyright &copy; 2018. Todos os direitos reservados</p>
+                        <p>Desenvolvido por EC.on Sistemas</p>
+                    </div>
+                </footer>
             </main>
-            <footer class="footer">
-                <div class="d-flex align-items-end flex-wrap justify-content-between">
-                    <p>Copyright &copy; 2018. Todos os direitos reservados</p>
-                    <p>Desenvolvido por EC.on Sistemas</p>
-                </div>
-            </footer>
         </div>
     </div>
 

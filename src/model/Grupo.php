@@ -95,9 +95,14 @@ class Grupo extends DB_DataObject
         $tpl = new HTML_Template_Sigma(VIEW_DIR . '/grupo');
         $pagina = 'form.tpl.html';
         $tpl->loadTemplateFile($pagina);
-
-        foreach ($this->table() as $key => $value) {
-            $tpl->setVariable(strtoupper($key), $this->$key);
+        
+        if ($id) {
+            foreach ($this->table() as $key => $value) {
+                $tpl->setVariable(strtoupper($key), $this->$key);
+            }
+            $tpl->setVariable('TITULO', 'Alterar dados do grupo');
+        } else {
+            $tpl->setVariable('TITULO', 'Adicionar grupo');
         }
 
         $tpl->setVariable('URL', URL);

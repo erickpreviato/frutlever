@@ -195,10 +195,23 @@ class Cidade extends DB_DataObject
             $tpl->parse('option');
         }
 
-        $tpl->setVariable('URL', URL);
-        $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);
-
         return $tpl->get();
+    }
+    
+    public static function showDataList() {
+        $tpl = new HTML_Template_Sigma(VIEW_DIR . '/cidade');
+        $pagina = 'datalist.tpl.html';
+        $tpl->loadTemplateFile($pagina);
         
+        $obj = new Cidade();
+        $obj->orderBy('nome', 'ASC');
+        $obj->find();
+        
+        while ($obj->fetch()) {
+            $tpl->setVariable('CIDADE', $obj->getnome().' -- '.Estado::get_estado($obj->getestado_id(), 'sigla'));
+            $tpl->parse('cidade');
+        }
+        
+        return $tpl->get();
     }
 }

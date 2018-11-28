@@ -9,6 +9,7 @@
 include_once '../../conf/config.default.php';
 
 include_once MODEL_DIR . '/Fornecedor.php';
+include_once MODEL_DIR . '/Dados.php';
 
 $contador = 1;
 $qtdLinhas = 10;

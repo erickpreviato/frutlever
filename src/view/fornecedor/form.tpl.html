@@ -38,6 +38,77 @@ Licença Pública Geral GNU para maiores detalhes.
         });
 
         $("#inputSigla").focus();
+        
+        $("#inputCep").on('keyup', function() {
+            if ($(this).val().indexOf('_') === -1) {
+                $cep = $(this).val().replace('-', '');
+                $.get("https://viacep.com.br/ws/"+$cep+"/json/", function(data) {
+                    $("#inputLogradouro").val(data['logradouro']);
+                    $("#inputBairro").val(data['bairro']);
+                    $("#inputCidade").val(data['localidade']);
+                    getEstadoPais(data['uf']);
+                });
+            }
+        });
+        $("#inputCep").mask('99999-999');     
+        
+        function getEstadoPais($sigla) {
+            $.post("{URL}/estado/", {showEstado: $sigla}).done(function( data ) {
+                $dados = data.split('--');
+                $('#estado_id').val($dados[0]);
+                $('#pais_id').val($dados[1]);
+            });
+        }
+        
+        $("#inputCidade").on('input', function() {
+            if ($(this).val().indexOf(' -- ') > -1) {
+                $cidade = $(this).val().split(' -- ');
+                getEstadoPais($cidade[1]);
+                $.post("{URL}/cidade/", {showCidade: $cidade[0]}).done(function( data ) {
+                    $dados = data.split('--');
+                    $('#cidade_id').val($dados[0]);
+                });
+            } else {
+                $.post("{URL}/cidade/", {showCidade: $(this).val()}).done(function( data ) {
+                    if (data != '---') {
+                        $dados = data.split('--');
+                        getEstadoPais($dados[2]);
+                        $('#cidade_id').val($dados[0]);
+                    } else {
+                        $('#estado_id').val(null);
+                        $('#pais_id').val(null);
+                        $('#cidade_id').val(0);
+                    }
+                });
+            }
+        });
+        
+        $("#inputCidade").focusout(function(){
+            if ($(this).val().indexOf(' -- ') > -1) {
+                $cidade = $(this).val().split(' -- ');
+                $('#inputCidade').val($cidade[0]);
+            }
+        });
+        
+        $("input[type=radio]").on('change', function() {
+            if ($(this).val() == 'J') {
+                $('.pessoa_juridica').removeClass('d-none');
+                $('.pessoa_fisica').addClass('d-none');
+                $("#inputCNPJ").attr('required', 'required');
+                $("#inputRazaoSocial").attr('required', 'required');
+                $("#inputNomeFantasia").attr('required', 'required');
+                $("#inputNome").removeAttr('required');
+                $("#inputCPF").removeAttr('required');
+            } else {
+                $('.pessoa_juridica').addClass('d-none');
+                $('.pessoa_fisica').removeClass('d-none');
+                $("#inputCNPJ").removeAttr('required');
+                $("#inputRazaoSocial").removeAttr('required');
+                $("#inputNomeFantasia").removeAttr('required');
+                $("#inputNome").attr('required', 'required');
+                $("#inputCPF").attr('required', 'required');
+            }
+        });
     });
 
 </script>
@@ -52,57 +123,83 @@ Licença Pública Geral GNU para maiores detalhes.
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <p><span class="text-danger"><b>*</b></span> Campos obrigatórios</p>
+                <p> Campos obrigatórios</p>
                 <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <label for="inputCNPJ">CNPJ <span class="text-danger"><b>*</b></span></label>
-                            <span data-toggle="popover" data-placement="left" data-content='CNPJ do fornecedor caso haja' class="pop"><i class="fa fa-question-circle"></i></span>
+                    <div class="form-group col-md-12">
+                        <input type="radio" checked="checked" name="tipo_pessoa" value="F"> Pessoa física <br />
+                        <input type="radio" name="tipo_pessoa" value="J"> Pessoa jurídica
+                    </div>
+                </div>
+                <div class="pessoa_juridica d-none">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <label for="inputCNPJ">CNPJ <span class="text-danger"><b>*</b></span></label>
+                                <span data-toggle="popover" data-placement="left" data-content='CNPJ do fornecedor caso haja' class="pop"><i class="fa fa-question-circle"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="inputCNPJ" name="cnpj" value="{CNPJ}" />
                         </div>
-                        <input type="text" class="form-control" id="inputCNPJ" name="cnpj" value="{CNPJ}"  required="required"  />
+
+                        <div class="form-group col-md-6">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <label for="inputInscricao">Inscrição Estadual </label>
+                                <span data-toggle="popover" data-placement="left" data-content='IE caso haja' class="pop"><i class="fa fa-question-circle"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="inputIE" name="inscricao" value="{INSCRICAO}" />
+                        </div>
                     </div>
 
-                    <div class="form-group col-md-6">
+                    <div class="form-group">
                         <div class="d-flex align-items-center justify-content-between">
-                            <label for="inputCPF">CPF <span class="text-danger"><b>*</b></span></label>
-                            <span data-toggle="popover" data-placement="left" data-content='CPF do fornecedor, se não houver CNPJ' class="pop"><i class="fa fa-question-circle"></i></span>
+                            <label for="inputRazaoSocial">Razão Social <span class="text-danger"><b>*</b></span></label>
+                            <span data-toggle="popover" data-placement="left" data-content='Razão Social do fornecedor' class="pop"><i class="fa fa-question-circle"></i></span>
                         </div>
-                        <input type="text" class="form-control" id="inputCPF" name="cpf" value="{CPF}"   />
-                    </div>               
+                        <input type="text" class="form-control" id="inputRazaoSocial" name="razao_social" value="{RAZAO_SOCIAL}" />
+                    </div>
+
+                    <div class="form-group">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <label for="inputNomeFantasia">Nome Fantasia <span class="text-danger"><b>*</b></span></label>
+                            <span data-toggle="popover" data-placement="left" data-content='Nome Fantasia do fornecedor' class="pop"><i class="fa fa-question-circle"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="inputNomeFantasia" name="nome_fantasia" value="{NOME_FANTASIA}" />
+                    </div>
+                </div>
+
+                <div class="pessoa_fisica">
+                    <div class="form-group">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <label for="inputNome">Nome <span class="text-danger"><b>*</b></span></label>
+                            <span data-toggle="popover" data-placement="left" data-content='Nome do fornecedor' class="pop"><i class="fa fa-question-circle"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="inputNome" name="nome" value="{NOME}" required="required" />
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <label for="inputCPF">CPF <span class="text-danger"><b>*</b></span></label>
+                                <span data-toggle="popover" data-placement="left" data-content='CPF do fornecedor, se não houver CNPJ' class="pop"><i class="fa fa-question-circle"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="inputCPF" name="cpf" value="{CPF}" required="required" />
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <label for="inputRG">RG </label>
+                                <span data-toggle="popover" data-placement="left" data-content='RG não obrigatório (pessoa física)' class="pop"><i class="fa fa-question-circle"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="inputRG" name="rg" value="{RG}" />
+                        </div>               
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <div class="d-flex align-items-center justify-content-between">
-                        <label for="inputRazaoSocial">Razão Social <span class="text-danger"><b>*</b></span></label>
-                        <span data-toggle="popover" data-placement="left" data-content='Razão Social do fornecedor' class="pop"><i class="fa fa-question-circle"></i></span>
-                    </div>
-                    <input type="text" class="form-control" id="inputRazaoSocial" name="razao_social" value="{RAZAO_SOCIAL}"  />
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <label for="inputInscricao">Inscrição Estadual </label>
-                            <span data-toggle="popover" data-placement="left" data-content='IE caso haja' class="pop"><i class="fa fa-question-circle"></i></span>
-                        </div>
-                        <input type="text" class="form-control" id="inputIE" name="inscricao" value="{INSCRICAO}"   />
-                    </div>
-
-                    <div class="form-group col-md-6">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <label for="inputRG">RG </label>
-                            <span data-toggle="popover" data-placement="left" data-content='RG não obrigatório (pessoa física)' class="pop"><i class="fa fa-question-circle"></i></span>
-                        </div>
-                        <input type="text" class="form-control" id="inputRG" name="rg" value="{RG}" />
-                    </div>               
-                </div>
-
-                <div class="form-group">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <label for="inputEmail">e-mail <span class="text-danger"><b>*</b></span></label>
+                        <label for="inputEmail">e-mail </label>
                         <span data-toggle="popover" data-placement="left" data-content='e-mail completo' class="pop"><i class="fa fa-question-circle"></i></span>
                     </div>
-                    <input type="text" class="form-control" id="inputEmail" name="email" value="{EMAIL}"  required="required"  />
+                    <input type="text" class="form-control" id="inputEmail" name="email" value="{EMAIL}"   />
                 </div>
 
 
@@ -130,12 +227,16 @@ Licença Pública Geral GNU para maiores detalhes.
             <div class="modal-body">
 
                 <div class="form-row">
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
+                        <label for="inputCep">CEP <span class="text-danger"><b>*</b></span></label>
+                        <input type="text" class="form-control" id="inputCep" name="cep" value="{CEP}" required="required" />
+                    </div>
+                    <div class="form-group col-md-6">
                         <label for="inputTipo">Tipo <span class="text-danger"><b>*</b></span></label>
                         <span data-toggle="popover" data-placement="left" data-content='Selecione o tipo de endereço' class="pop"><i class="fa fa-question-circle"></i></span>
-                        <select class="form-control" id="inputTipo" name="tipo">
+                        <select class="form-control" id="inputTipo" name="tipo" required="required">
                             <option>Selecione</option>
-                            <option value='1'>Residêncial</option>
+                            <option value='1'>Residencial</option>
                             <option value='2'>Rural</option>
                             <option value='3'>Comercial</option>
                         </select>
@@ -148,20 +249,27 @@ Licença Pública Geral GNU para maiores detalhes.
                             <label for="inputLogradouro">Endereço <span class="text-danger"><b>*</b></span></label>
                             <span data-toggle="popover" data-placement="left" data-content='Endereço do fornecedor' class="pop"><i class="fa fa-question-circle"></i></span>
                         </div>
-                        <input type="text" class="form-control" id="inputLogradouro" name="logradouro" value="{LOGRADOURO}"  />
+                        <input type="text" class="form-control" id="inputLogradouro" name="logradouro" value="{LOGRADOURO}" required="required" />
                     </div>
 
                     <div class="form-group col-md-2">
                         <div class="d-flex align-items-center justify-content-between">
-                            <label for="inputNumero">Número <span class="text-danger"><b>*</b></span></label>
+                            <label for="inputNumero">N&ordm; </label>
                             <span data-toggle="popover" data-placement="left" data-content='Número' class="pop"><i class="fa fa-question-circle"></i></span>
                         </div>
                         <input type="text" class="form-control" id="inputNumero" name="numero" value="{NUMERO}"  />
                     </div>
-
-
                 </div>
-
+                
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <label for="inputBairro">Bairro </label>
+                            <span data-toggle="popover" data-placement="left" data-content='Bairro do fornecedor' class="pop"><i class="fa fa-question-circle"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="inputBairro" name="bairro" value="{BAIRRO}"  />
+                    </div>
+                </div>
 
                 <div class="form-row">
                     <div class="form-group col-md-6">
@@ -169,7 +277,7 @@ Licença Pública Geral GNU para maiores detalhes.
                             <label for="inputLatitude">Latitude <span class="text-danger"><b>*</b></span></label>
                             <span data-toggle="popover" data-placement="left" data-content='Latitude' class="pop"><i class="fa fa-question-circle"></i></span>
                         </div>
-                        <input type="text" class="form-control" id="inputLatitude" name="latitude" value="{LATITUDE}"  required="required"  />
+                        <input type="text" class="form-control" id="inputLatitude" name="latitude" value="{LATITUDE}" required="required" />
                     </div>
 
                     <div class="form-group col-md-6">
@@ -177,21 +285,39 @@ Licença Pública Geral GNU para maiores detalhes.
                             <label for="inputLongitude">Longitude <span class="text-danger"><b>*</b></span></label>
                             <span data-toggle="popover" data-placement="left" data-content='Longitude' class="pop"><i class="fa fa-question-circle"></i></span>
                         </div>
-                        <input type="text" class="form-control" id="inputLongitude" name="longitude" value="{LONGITUDE}"   />
+                        <input type="text" class="form-control" id="inputLongitude" name="longitude" value="{LONGITUDE}" required="required" />
                     </div>               
                 </div>
-
 
                 <div class="form-group">
                     <div class="d-flex align-items-center justify-content-between">
                         <label for="inputCidade">Cidade <span class="text-danger"><b>*</b></span></label>
                         <span data-toggle="popover" data-placement="left" data-content='Selecione a cidade' class="pop"><i class="fa fa-question-circle"></i></span>
                     </div>
-                    <select class="form-control" id="inputCidade" name="cidade_id">
-                        {OPTION_CIDADES}
+                    <input type="text" list="cidades" class="form-control" autocomplete="off" id="inputCidade" name="cidade" value="{CIDADE}" required="required" />
+                    {CIDADES}
+                    <input type="hidden" name="cidade_id" id="cidade_id" value="0" />
+                </div>
+                
+                <div class="form-group">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <label for="inputEstado">Estado <span class="text-danger"><b>*</b></span></label>
+                        <span data-toggle="popover" data-placement="left" data-content='Selecione o estado' class="pop"><i class="fa fa-question-circle"></i></span>
+                    </div>
+                    <select class="form-control" name="estado_id" id="estado_id" required="required">
+                        {ESTADOS}
                     </select>
                 </div>
-
+                
+                <!--<div class="form-group">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <label for="inputPais">País </label>
+                        <span data-toggle="popover" data-placement="left" data-content='Selecione o país' class="pop"><i class="fa fa-question-circle"></i></span>
+                    </div>
+                    <select class="form-control" name="pais_id" id="pais_id">
+                        {PAISES}
+                    </select>
+                </div>-->
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Cancelar</button>

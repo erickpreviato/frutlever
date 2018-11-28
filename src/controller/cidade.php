@@ -19,6 +19,18 @@ if (isset($_POST['edit'])) {
     die();
 }
 
+if (isset($_POST['showCidade'])) {
+    $cidade = new Cidade();
+    if ($cidade->get('nome', $_POST['showCidade'])) {
+        $estado = new Estado();
+        $estado->get($cidade->getestado_id());
+        echo $cidade->getid().'--'.$cidade->getnome().'--'.$estado->getsigla();
+    } else {
+        echo '---';
+    }
+    die();
+}
+
 if (isset($_POST['salvar'])) {
 
     $cidade = new Cidade();

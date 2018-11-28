@@ -34,17 +34,23 @@ class Fornecedor extends DB_DataObject
         $registros = 0;
         $ret = array('draw' => intval(0), 'data' => null, 'recordsTotal' => 1, 'recordsFiltered' => 1);
 
-
+        $dados = new Dados();
+        $this->joinAdd($dados);
+        $this->selectAdd();
+        $this->selectAdd("fornecedor.id, nome, razao_social, cnpj, cpf");
+        
         if ($pesquisa != '') {
-            $this->whereAdd("descricao like '%$pesquisa%'");
-            $this->whereAdd("simbolo like '%$pesquisa%'");
+            $this->whereAdd("nome like '%$pesquisa%'");
+            $this->whereAdd("razao_social like '%$pesquisa%'", 'OR');
+            $this->whereAdd("cpf like '%$pesquisa%'", 'OR');
+            $this->whereAdd("cnpj like '%$pesquisa%'", 'OR');
         }
 
         $registros = $this->count();
 
 
         //ordenação
-        $nomesColunas = array('descricao', 'simbolo');
+        $nomesColunas = array('nome');
         if ($colunaOrdena >= 0 && $colunaOrdena < count($nomesColunas)) {
             $this->orderBy($nomesColunas[$colunaOrdena] . ' ' . $direcaoOrdenacao);
         }
@@ -56,7 +62,7 @@ class Fornecedor extends DB_DataObject
 
             unset($c);
 
-            $c[] = $this->dados_id;
+            $c[] = $this->nome.$this->razao_social.' ('.$this->cpf.$this->cnpj.')';
             $c[] = $this->get_buttons($this->id);
 
             $ret['data'][] = $c;
@@ -97,11 +103,18 @@ class Fornecedor extends DB_DataObject
         $pagina = 'form.tpl.html';
         $tpl->loadTemplateFile($pagina);
 
-        foreach ($this->table() as $key => $value) {
-            $tpl->setVariable(strtoupper($key), $this->$key);
+        if ($id) {
+            foreach ($this->table() as $key => $value) {
+                $tpl->setVariable(strtoupper($key), $this->$key);
+            }
+            $tpl->setVariable('TITULO', 'Alterar dados do fornecedor');
+        } else {
+            $tpl->setVariable('TITULO', 'Adicionar fornecedor');
         }
         
-        $tpl->setVariable('OPTION_CIDADES', Cidade::get_option_cidades($this->cidade_id));
+        $tpl->setVariable('CIDADES', Cidade::showDataList());
+        $tpl->setVariable('ESTADOS', Estado::get_option_estados());
+        $tpl->setVariable('PAISES', Pais::get_option_pais());
 
         $tpl->setVariable('URL', URL);
         $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);

@@ -8,8 +8,12 @@
 
 include_once '../conf/config.default.php';
 
+include_once MODEL_DIR . '/Dados.php';
 include_once MODEL_DIR . '/Fornecedor.php';
+include_once MODEL_DIR . '/Pais.php';
+include_once MODEL_DIR . '/Estado.php';
 include_once MODEL_DIR . '/Cidade.php';
+include_once MODEL_DIR . '/Endereco.php';
 
 include_once CONTROLLER_DIR . '/fornecedor.php';
 

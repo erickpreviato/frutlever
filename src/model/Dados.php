@@ -12,7 +12,9 @@ class Dados extends DB_DataObject
     public $__table = 'dados';               // table name
     public $id;                             // int(4) primary_key not_null
     public $razao_social;                   // varchar(255)
+    public $nome_fantasia;                  // varchar(200)
     public $cnpj;                           // varchar(20)
+    public $nome;                           // varchar(100)
     public $cpf;                            // varchar(15)
     public $inscricao;                      // varchar(50)
     public $rg;                             // varchar(15)
@@ -23,4 +25,14 @@ class Dados extends DB_DataObject
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
+    
+    public function set_dados($post) {
+        foreach ($this->table() as $key => $value) {
+            foreach ($post as $key_post => $value_post) {
+                if ($key = $key_post) {
+                    $this->$key = (isset($post[$key_post]) ? $post[$key_post] : $this->$key);
+                }
+            }
+        }
+    }
 }

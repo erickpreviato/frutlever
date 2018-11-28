@@ -99,8 +99,13 @@ class Unidade extends DB_DataObject {
         $pagina = 'form.tpl.html';
         $tpl->loadTemplateFile($pagina);
 
-        foreach ($this->table() as $key => $value) {
-            $tpl->setVariable(strtoupper($key), $this->$key);
+        if ($id) {
+            foreach ($this->table() as $key => $value) {
+                $tpl->setVariable(strtoupper($key), $this->$key);
+            }
+            $tpl->setVariable('TITULO', 'Alterar dados da unidade');
+        } else {
+            $tpl->setVariable('TITULO', 'Adicionar unidade');
         }
 
         $tpl->setVariable('URL', URL);

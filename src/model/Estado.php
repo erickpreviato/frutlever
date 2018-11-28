@@ -171,7 +171,7 @@ class Estado extends DB_DataObject {
         }
     }
     
-    public static function get_estado($id = null, $field = null) {
+    public static function get_estado($id = null, $field = 'nome') {
         $obj = new Estado();
         $obj->get($id);
         return $obj->$field;

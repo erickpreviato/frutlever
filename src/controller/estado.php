@@ -19,6 +19,13 @@ if (isset($_POST['edit'])) {
     die();
 }
 
+if (isset($_POST['showEstado'])) {
+    $estado = new Estado();
+    $estado->get('sigla', $_POST['showEstado']);
+    echo $estado->getid().'--'.$estado->getpais_id();
+    die();
+}
+
 if (isset($_POST['salvar'])) {
 
     $estado = new Estado();
