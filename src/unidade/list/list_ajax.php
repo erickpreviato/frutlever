@@ -43,7 +43,7 @@ if (isset($_GET['order']) && isset($_GET['order'][0]['dir']) && ($_GET['order'][
 }
 
 $unidade = new Unidade();
-echo $unidade->list_ajax($contador, $qtdLinhas, $inicio, $pesquisa, $colunaOrdena, $direcaoOrdenacao);
+echo $unidade->listAjax($contador, $qtdLinhas, $inicio, $pesquisa, $colunaOrdena, $direcaoOrdenacao);
 
 
 

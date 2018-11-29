@@ -30,7 +30,7 @@ class Estado extends DB_DataObject {
         return $tpl->get();
     }
 
-    function list_ajax($cont = 0, $qtdLinhas = 10, $inicio = 0, $pesquisa = '', $colunaOrdena = 0, $direcaoOrdenacao = 'asc') {
+    function listAjax($cont = 0, $qtdLinhas = 10, $inicio = 0, $pesquisa = '', $colunaOrdena = 0, $direcaoOrdenacao = 'asc') {
 
         $total = $this->count();
         $registros = 0;
@@ -66,7 +66,7 @@ class Estado extends DB_DataObject {
             $c[] = $this->e_sigla;
             $c[] = $this->e_nome;
             $c[] = $this->p_nome;
-            $c[] = $this->get_buttons($this->e_id);
+            $c[] = $this->getButtons($this->e_id);
 
             $ret['data'][] = $c;
         }
@@ -86,7 +86,7 @@ class Estado extends DB_DataObject {
         }
     }
 
-    function get_buttons($ID) {
+    function getButtons($ID) {
 
         $tpl = new HTML_Template_Sigma(VIEW_DIR . '/estado');
         $pagina = 'buttons.tpl.html';
@@ -111,10 +111,10 @@ class Estado extends DB_DataObject {
                 $tpl->setVariable(strtoupper($key), $this->$key);
             }
             $tpl->setVariable('TITULO', 'Alterar dados do estado');
-            $tpl->setVariable('OPTION_PAISES', Pais::get_option_pais($this->id));
+            $tpl->setVariable('OPTION_PAISES', Pais::getOptionPais($this->id));
         } else {
             $tpl->setVariable('TITULO', 'Adicionar estado');
-            $tpl->setVariable('OPTION_PAISES', Pais::get_option_pais());
+            $tpl->setVariable('OPTION_PAISES', Pais::getOptionPais());
         }
 
 
@@ -135,7 +135,7 @@ class Estado extends DB_DataObject {
             $tpl->setVariable(strtoupper($key), isset($this->$key) ? $this->$key : ' ');
         }
 
-        $get_pais = Pais::get_pais($this->$key, 'nome');
+        $get_pais = Pais::getPais($this->$key, 'nome');
         $tpl->setVariable('PAIS', isset($get_pais) ? $get_pais : '<cite class="blockquote-footer">Não encontrado.</cite>');
 
 
@@ -161,7 +161,7 @@ class Estado extends DB_DataObject {
         return $tpl->get();
     }
 
-    public function set_dados($post) {
+    public function setDados($post) {
         foreach ($this->table() as $key => $value) {
             foreach ($post as $key_post => $value_post) {
                 if ($key = $key_post) {
@@ -171,13 +171,13 @@ class Estado extends DB_DataObject {
         }
     }
     
-    public static function get_estado($id = null, $field = 'nome') {
+    public static function getEstado($id = null, $field = 'nome') {
         $obj = new Estado();
         $obj->get($id);
         return $obj->$field;
     }
     
-    public static function get_option_estados ($id = null) {
+    public static function getOptionEstados ($id = null) {
     
         $tpl = new HTML_Template_Sigma(VIEW_DIR . '/estado');
         $pagina = 'option.tpl.html';

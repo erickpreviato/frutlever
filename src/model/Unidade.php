@@ -29,7 +29,7 @@ class Unidade extends DB_DataObject {
         return $tpl->get();
     }
 
-    function list_ajax($cont = 0, $qtdLinhas = 10, $inicio = 0, $pesquisa = '', $colunaOrdena = 0, $direcaoOrdenacao = 'asc') {
+    function listAjax($cont = 0, $qtdLinhas = 10, $inicio = 0, $pesquisa = '', $colunaOrdena = 0, $direcaoOrdenacao = 'asc') {
 
         $total = $this->count();
         $registros = 0;
@@ -59,7 +59,7 @@ class Unidade extends DB_DataObject {
 
             $c[] = $this->descricao;
             $c[] = $this->simbolo;
-            $c[] = $this->get_buttons($this->id);
+            $c[] = $this->getButtons($this->id);
 
             $ret['data'][] = $c;
         }
@@ -79,7 +79,7 @@ class Unidade extends DB_DataObject {
         }
     }
 
-    function get_buttons($ID) {
+    function getButtons($ID) {
 
         $tpl = new HTML_Template_Sigma(VIEW_DIR . '/unidade');
         $pagina = 'buttons.tpl.html';
@@ -146,7 +146,7 @@ class Unidade extends DB_DataObject {
         return $tpl->get();
     }
 
-    public function set_dados($post) {
+    public function setDados($post) {
         foreach ($this->table() as $key => $value) {
             foreach ($post as $key_post => $value_post) {
                 if ($key = $key_post) {

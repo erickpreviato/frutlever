@@ -27,7 +27,7 @@ if (isset($_POST['salvar'])) {
     if (!$insert)
         $pais->get($_POST['id']);
 
-    $pais->set_dados($_POST);
+    $pais->setDados($_POST);
 
     if ($insert) {
         $pais->insert();

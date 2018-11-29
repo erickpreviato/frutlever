@@ -27,7 +27,7 @@ if (isset($_POST['salvar'])) {
     if (!$insert)
         $grupo->get($_POST['id']);
 
-    $grupo->set_dados($_POST);
+    $grupo->setDados($_POST);
 
     if ($insert) {
         $id = $grupo->insert();

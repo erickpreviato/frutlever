@@ -39,7 +39,7 @@ if (isset($_POST['salvar'])) {
     if (!$insert)
         $cidade->get($_POST['id']);
 
-    $cidade->set_dados($_POST);
+    $cidade->setDados($_POST);
 
     if ($insert) {
         $id = $cidade->insert();

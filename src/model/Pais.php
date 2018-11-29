@@ -29,7 +29,7 @@ class Pais extends DB_DataObject {
         return $tpl->get();
     }
 
-    function list_ajax($cont = 0, $qtdLinhas = 10, $inicio = 0, $pesquisa = '', $colunaOrdena = 0, $direcaoOrdenacao = 'asc') {
+    function listAjax($cont = 0, $qtdLinhas = 10, $inicio = 0, $pesquisa = '', $colunaOrdena = 0, $direcaoOrdenacao = 'asc') {
 
         $total = $this->count();
         $registros = 0;
@@ -57,7 +57,7 @@ class Pais extends DB_DataObject {
 
             $c[] = $this->codigo;
             $c[] = $this->nome;
-            $c[] = $this->get_buttons($this->id);
+            $c[] = $this->getButtons($this->id);
 
             $ret['data'][] = $c;
         }
@@ -77,7 +77,7 @@ class Pais extends DB_DataObject {
         }
     }
 
-    function get_buttons($ID) {
+    function getButtons($ID) {
 
         $tpl = new HTML_Template_Sigma(VIEW_DIR . '/pais');
         $pagina = 'buttons.tpl.html';
@@ -144,7 +144,7 @@ class Pais extends DB_DataObject {
         return $tpl->get();
     }
 
-    public function set_dados($post) {
+    public function setDados($post) {
         foreach ($this->table() as $key => $value) {
             foreach ($post as $key_post => $value_post) {
                 if ($key = $key_post) {
@@ -154,13 +154,13 @@ class Pais extends DB_DataObject {
         }
     }
     
-    public static function get_pais($id = null, $field = null) {
+    public static function getPais($id = null, $field = null) {
         $pais = new Pais();
         $pais->get($id);
         return $pais->$field;
     }
     
-    public static function get_option_pais ($id = null) {
+    public static function getOptionPais ($id = null) {
     
         $tpl = new HTML_Template_Sigma(VIEW_DIR . '/pais');
         $pagina = 'option.tpl.html';

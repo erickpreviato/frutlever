@@ -25,6 +25,11 @@ and open the template in the editor.
     width: 80px !important;
 }
 
+.table-w120 {
+    max-width: 120px !important;
+    width: 120px !important;
+}
+
 .f-details {
     padding: 3px 7px;
     background: #eee;

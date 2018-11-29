@@ -20,6 +20,7 @@ include_once CONTROLLER_DIR . '/fornecedor.php';
 include_once INCLUDE_DIR . '/header.php';
 
 $fornecedor = new Fornecedor();
+$fornecedor->find();
 echo $fornecedor->showAll();
 
 include_once INCLUDE_DIR . '/footer.php';

@@ -44,7 +44,7 @@ if (isset($_GET['order']) && isset($_GET['order'][0]['dir']) && ($_GET['order'][
 }
 
 $fornecedor = new Fornecedor();
-echo $fornecedor->list_ajax($contador, $qtdLinhas, $inicio, $pesquisa, $colunaOrdena, $direcaoOrdenacao);
+echo $fornecedor->listAjax($contador, $qtdLinhas, $inicio, $pesquisa, $colunaOrdena, $direcaoOrdenacao);
 
 
 

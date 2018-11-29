@@ -29,7 +29,7 @@ class Cidade extends DB_DataObject
         return $tpl->get();
     }
 
-    function list_ajax($cont = 0, $qtdLinhas = 10, $inicio = 0, $pesquisa = '', $colunaOrdena = 0, $direcaoOrdenacao = 'asc') {
+    function listAjax($cont = 0, $qtdLinhas = 10, $inicio = 0, $pesquisa = '', $colunaOrdena = 0, $direcaoOrdenacao = 'asc') {
 
         $total = $this->count();
         $registros = 0;
@@ -63,7 +63,7 @@ class Cidade extends DB_DataObject
 
             $c[] = $this->c_nome;
             $c[] = $this->e_nome;
-            $c[] = $this->get_buttons($this->c_id);
+            $c[] = $this->getButtons($this->c_id);
 
             $ret['data'][] = $c;
         }
@@ -83,7 +83,7 @@ class Cidade extends DB_DataObject
         }
     }
 
-    function get_buttons($ID) {
+    function getButtons($ID) {
 
         $tpl = new HTML_Template_Sigma(VIEW_DIR . '/cidade');
         $pagina = 'buttons.tpl.html';
@@ -108,10 +108,10 @@ class Cidade extends DB_DataObject
                 $tpl->setVariable(strtoupper($key), $this->$key);
             }
             $tpl->setVariable('TITULO', 'Alterar dados do cidade');
-            $tpl->setVariable('OPTION_ESTADOS', Estado::get_option_estados($this->estado_id));
+            $tpl->setVariable('OPTION_ESTADOS', Estado::getOptionEstados($this->estado_id));
         } else {
             $tpl->setVariable('TITULO', 'Adicionar cidade');
-            $tpl->setVariable('OPTION_ESTADOS', Estado::get_option_estados());
+            $tpl->setVariable('OPTION_ESTADOS', Estado::getOptionEstados());
         }
 
 
@@ -132,7 +132,7 @@ class Cidade extends DB_DataObject
             $tpl->setVariable(strtoupper($key), isset($this->$key) ? $this->$key : ' ');
         }
 
-        $get_estado = Estado::get_estado($this->$key, 'nome');
+        $get_estado = Estado::getEstado($this->$key, 'nome');
         $tpl->setVariable('ESTADO', isset($get_estado) ? $get_estado : '<cite class="blockquote-footer">Não encontrado.</cite>');
 
 
@@ -152,7 +152,7 @@ class Cidade extends DB_DataObject
             $tpl->setVariable(strtoupper($key), $this->$key);
         }
         
-        $get_estado = Estado::get_estado($this->$key, 'nome');
+        $get_estado = Estado::getEstado($this->$key, 'nome');
         $tpl->setVariable('ESTADO', isset($get_estado) ? $get_estado : '<cite class="blockquote-footer">Não encontrado.</cite>');
 
         $tpl->setVariable('URL', URL);
@@ -161,7 +161,7 @@ class Cidade extends DB_DataObject
         return $tpl->get();
     }
 
-    public function set_dados($post) {
+    public function setDados($post) {
         foreach ($this->table() as $key => $value) {
             foreach ($post as $key_post => $value_post) {
                 if ($key = $key_post) {
@@ -171,13 +171,13 @@ class Cidade extends DB_DataObject
         }
     }
     
-    public static function get_cidade($id = null, $field = null) {
+    public static function getCidade($id = null, $field = null) {
         $obj = new Cidade();
         $obj->get($id);
         return $obj->$field;
     }
     
-    public static function get_option_cidades ($id = null) {
+    public static function getOptionCidades ($id = null) {
     
         $tpl = new HTML_Template_Sigma(VIEW_DIR . '/cidade');
         $pagina = 'option.tpl.html';
@@ -208,7 +208,7 @@ class Cidade extends DB_DataObject
         $obj->find();
         
         while ($obj->fetch()) {
-            $tpl->setVariable('CIDADE', $obj->getnome().' -- '.Estado::get_estado($obj->getestado_id(), 'sigla'));
+            $tpl->setVariable('CIDADE', $obj->getnome().' -- '.Estado::getEstado($obj->getestado_id(), 'sigla'));
             $tpl->parse('cidade');
         }
         

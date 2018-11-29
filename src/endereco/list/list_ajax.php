@@ -44,7 +44,7 @@ if (isset($_GET['order']) && isset($_GET['order'][0]['dir']) && ($_GET['order'][
 }
 
 $endereco = new Endereco();
-echo $endereco->list_ajax($contador, $qtdLinhas, $inicio, $pesquisa, $colunaOrdena, $direcaoOrdenacao);
+echo $endereco->listAjax($contador, $qtdLinhas, $inicio, $pesquisa, $colunaOrdena, $direcaoOrdenacao);
 
 
 

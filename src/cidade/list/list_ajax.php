@@ -44,7 +44,7 @@ if (isset($_GET['order']) && isset($_GET['order'][0]['dir']) && ($_GET['order'][
 }
 
 $cidade = new Cidade();
-echo $cidade->list_ajax($contador, $qtdLinhas, $inicio, $pesquisa, $colunaOrdena, $direcaoOrdenacao);
+echo $cidade->listAjax($contador, $qtdLinhas, $inicio, $pesquisa, $colunaOrdena, $direcaoOrdenacao);
 
 
 

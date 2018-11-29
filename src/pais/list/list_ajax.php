@@ -43,7 +43,7 @@ if (isset($_GET['order']) && isset($_GET['order'][0]['dir']) && ($_GET['order'][
 }
 
 $pais = new Pais();
-echo $pais->list_ajax($contador, $qtdLinhas, $inicio, $pesquisa, $colunaOrdena, $direcaoOrdenacao);
+echo $pais->listAjax($contador, $qtdLinhas, $inicio, $pesquisa, $colunaOrdena, $direcaoOrdenacao);
 
 
 

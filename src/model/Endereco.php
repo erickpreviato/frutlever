@@ -23,7 +23,7 @@ class Endereco extends DB_DataObject
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
  
-    public function set_dados($post) {
+    public function setDados($post) {
         foreach ($this->table() as $key => $value) {
             foreach ($post as $key_post => $value_post) {
                 if ($key = $key_post) {

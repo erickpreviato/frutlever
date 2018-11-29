@@ -27,7 +27,7 @@ if (isset($_POST['salvar'])) {
     if (!$insert)
         $unidade->get($_POST['id']);
 
-    $unidade->set_dados($_POST);
+    $unidade->setDados($_POST);
 
     if ($insert) {
         $id = $unidade->insert();

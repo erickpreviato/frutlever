@@ -34,12 +34,12 @@ if (isset($_POST['salvar'])) {
         
     //Cadastrar endereco antes de salvar
     $endereco = new Endereco();
-    $endereco->set_dados($_POST);
+    $endereco->setDados($_POST);
     $endereco->setcidade_id($idCidade);
     $idEndereco = $endereco->insert();
 
     $dados = new Dados();
-    $dados->set_dados($_POST);
+    $dados->setDados($_POST);
     $dados->setendereco_id($idEndereco);
     $idDados = $dados->insert();
     

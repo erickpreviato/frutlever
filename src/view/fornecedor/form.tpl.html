@@ -50,7 +50,9 @@ Licença Pública Geral GNU para maiores detalhes.
                 });
             }
         });
-        $("#inputCep").mask('99999-999');     
+        $("#inputCep").mask('99999-999');
+        $("#inputCNPJ").mask('99.999.999/9999-99');
+        $("#inputCPF").mask('999.999.999-99');
         
         function getEstadoPais($sigla) {
             $.post("{URL}/estado/", {showEstado: $sigla}).done(function( data ) {
@@ -124,13 +126,15 @@ Licença Pública Geral GNU para maiores detalhes.
             </div>
             <div class="modal-body">
                 <p> Campos obrigatórios</p>
+                <!-- BEGIN row_opts -->
                 <div class="form-row">
                     <div class="form-group col-md-12">
                         <input type="radio" checked="checked" name="tipo_pessoa" value="F"> Pessoa física <br />
                         <input type="radio" name="tipo_pessoa" value="J"> Pessoa jurídica
                     </div>
                 </div>
-                <div class="pessoa_juridica d-none">
+                <!-- END row_opts -->
+                <div class="pessoa_juridica {D-NONE-JURIDICA}">
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <div class="d-flex align-items-center justify-content-between">
@@ -166,7 +170,7 @@ Licença Pública Geral GNU para maiores detalhes.
                     </div>
                 </div>
 
-                <div class="pessoa_fisica">
+                <div class="pessoa_fisica {D-NONE-FISICA}">
                     <div class="form-group">
                         <div class="d-flex align-items-center justify-content-between">
                             <label for="inputNome">Nome <span class="text-danger"><b>*</b></span></label>

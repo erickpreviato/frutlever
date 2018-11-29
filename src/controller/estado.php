@@ -34,7 +34,7 @@ if (isset($_POST['salvar'])) {
     if (!$insert)
         $estado->get($_POST['id']);
 
-    $estado->set_dados($_POST);
+    $estado->setDados($_POST);
 
     if ($insert) {
         $estado->insert();
