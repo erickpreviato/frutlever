@@ -16,7 +16,7 @@ Licença Pública Geral GNU para maiores detalhes.
 Você deve ter recebido uma cópia da Licença Pública Geral GNU junto
 com este programa, Se não, veja <http://www.gnu.org/licenses/>.
 -->
-<div class="modal-dialog">
+<div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="addModalLabel">Detalhes do fornecedor</h5>
@@ -25,20 +25,96 @@ com este programa, Se não, veja <http://www.gnu.org/licenses/>.
         </div>
         <div class="modal-body modal-details">
 
+            <!-- BEGIN row_juridico -->
             <div class="form-group">
-                <label for="inputDescricao">Descrição</label>
-                <p class="f-details">{DESCRICAO}</p>
+                <label for="inputFornecedor">Fornecedor</label>
+                <p class="f-details">{CNPJ} - {RAZAO_SOCIAL}</p>
+            </div>
+            <div class="form-group">
+                <label for="inputNomeFantasia">Nome fantasia</label>
+                <p class="f-details">{NOME_FANTASIA}</p>
+            </div>
+            <div class="form-group">
+                <label for="inputInscricao">Inscrição Estadual</label>
+                <p class="f-details">{INSCRICAO}</p>
+            </div>
+            <!-- END row_juridico -->
+
+
+            <!-- BEGIN row_fisico -->
+            <div class="form-group">
+                <label for="inputFornecedor">Fornecedor</label>
+                <p class="f-details">{CPF} - {NOME}</p>
+            </div>
+            <div class="form-group">
+                <label for="inputRg">RG</label>
+                <p class="f-details">{RG}</p>
+            </div>
+            <!-- END row_fisico -->
+
+            <div class="form-group">
+                <label for="inputEmail">E-mail</label>
+                <p class="f-details">{EMAIL}</p>
+            </div>
+
+            <div class="form-group">
+                <label for="inputInformacoes">Informações</label>
+                <p class="f-details">{INFORMACOES}</p>
+            </div>
+
+            <div class="form-group">
+                <label for="inputLogo">Logo</label>
+                <p class="f-details">{LOGO}</p>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="inputTipo">Tipo</label>
+                    <p class="f-details">{TIPO}</p>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputCEP">CEP</label>
+                    <p class="f-details">{CEP}</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-10">
+                    <label for="inputLogradouro">Logradouro</label>
+                    <p class="f-details">{LOGRADOURO}</p>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="inputNumero">Número</label>
+                    <p class="f-details">{NUMERO}</p>
+                </div>
             </div>
             
-            <div class="form-group">
-                <label for="inputSimbolo">Símbolo</label>
-                <p class="f-details">{SIMBOLO}</p>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="inputLatitude">Latitude</label>
+                    <p class="f-details">{LATITUDE}</p>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputLongitude">Longitude</label>
+                    <p class="f-details">{LONGITUDE}</p>
+                </div>
             </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Fechar</button>
+            
+            <div class="row">
+                <div class="form-group col-md-8">
+                    <label for="inputCidade">Cidade</label>
+                    <p class="f-details">{CIDADE}</p>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputEstado">Estado</label>
+                    <p class="f-details">{ESTADO}</p>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Fechar</button>
+            </div>
         </div>
     </div>
 </div>
-
 

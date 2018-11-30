@@ -20,7 +20,7 @@ if (isset($_POST['edit'])) {
 }
 
 if (isset($_POST['salvar'])) {
-    
+
     //Checar cidade
     $cidade = new Cidade();
     $cidade->setestado_id($_POST['estado_id']);
@@ -31,29 +31,54 @@ if (isset($_POST['salvar'])) {
     } else {
         $idCidade = $cidade->insert();
     }
-        
-    //Cadastrar endereco antes de salvar
-    $endereco = new Endereco();
-    $endereco->setDados($_POST);
-    $endereco->setcidade_id($idCidade);
-    $idEndereco = $endereco->insert();
 
-    $dados = new Dados();
-    $dados->setDados($_POST);
-    $dados->setendereco_id($idEndereco);
-    $idDados = $dados->insert();
-    
-    $fornecedor = new Fornecedor();
-    $fornecedor->setdados_id($idDados);
+    if (!$_POST['id']) {
 
-    if ($fornecedor->insert()) {
-        $_SESSION['t'] = 'success';
-        $_SESSION['msg'] = 'Inseriu';
+        //Cadastrar endereco antes de salvar
+        $endereco = new Endereco();
+        $endereco->setDados($_POST);
+        $endereco->setcidade_id($idCidade);
+        $idEndereco = $endereco->insert();
+
+        $dados = new Dados();
+        $dados->setDados($_POST);
+        $dados->setendereco_id($idEndereco);
+        $idDados = $dados->insert();
+
+        $fornecedor = new Fornecedor();
+        $fornecedor->setdados_id($idDados);
+
+        if ($fornecedor->insert()) {
+            $_SESSION['t'] = 'success';
+            $_SESSION['msg'] = 'Inseriu';
+        } else {
+            $_SESSION['t'] = 'erro';
+            $_SESSION['msg'] = 'Não Inseriu';
+        }
     } else {
-        $_SESSION['t'] = 'erro';
-        $_SESSION['msg'] = 'Não Inseriu';
+
+        $fornecedor = new Fornecedor();
+        $fornecedor->get($_POST['id']);
+
+        $dados = new Dados();
+        $dados->get($fornecedor->getdados_id());
+        $dados->setDados($_POST);
+        $idDados = $dados->update();
+
+        $endereco = new Endereco();
+        $endereco->get($dados->getendereco_id());
+        $endereco->setDados($_POST);
+        $endereco->setcidade_id($idCidade);
+        $idEndereco = $endereco->update();
+
+        if ($idDados || $idEndereco) {
+            $_SESSION['t'] = 'success';
+            $_SESSION['msg'] = 'Alterous';
+        } else {
+            $_SESSION['t'] = 'erro';
+            $_SESSION['msg'] = 'não Alterous';
+        }
     }
-    
     header('location: ./');
     die();
 }
