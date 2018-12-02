@@ -24,6 +24,7 @@ com este programa, Se não, veja <http://www.gnu.org/licenses/>.
         $(".table tr td button").tooltip();
 
         $(".btn_new").on('click', function () {
+            $("#myModal .modal-title").html('Adicionar país');
             $("#myModal .modal-body").html('<center><img src="{URL}/view/img/carregando.gif" /></center>');
             $("#myModal").modal("show");
             $.post("{PHP_SELF}", {new: $(this).val()}).done(function (data) {
@@ -32,6 +33,7 @@ com este programa, Se não, veja <http://www.gnu.org/licenses/>.
         });
 
         $(".btn_edit").on('click', function () {
+            $("#myModal .modal-title").html('Editar país');
             $("#myModal .modal-body").html('<center><img src="{URL}/view/img/carregando.gif" /></center>');
             $("#myModal").modal("show");
             $.post("{PHP_SELF}", {edit: $(this).val()}).done(function (data) {
@@ -40,6 +42,7 @@ com este programa, Se não, veja <http://www.gnu.org/licenses/>.
         });
         
         $(".btn_view").on('click', function () {
+            $("#myModal .modal-title").html('Detalhes do país');
             $("#myModal .modal-body").html('<center><img src="{URL}/view/img/carregando.gif" /></center>');
             $("#myModal").modal("show");
             $.post("{PHP_SELF}", {view: $(this).val()}).done(function (data) {
@@ -48,6 +51,7 @@ com este programa, Se não, veja <http://www.gnu.org/licenses/>.
         });
         
         $(".btn_del").on('click', function () {
+            $("#myModal .modal-title").html('Excluir país');
             $("#myModal .modal-body").html('<center><img src="{URL}/view/img/carregando.gif" /></center>');
             $("#myModal").modal("show");
             $.post("{PHP_SELF}", {del: $(this).val()}).done(function (data) {

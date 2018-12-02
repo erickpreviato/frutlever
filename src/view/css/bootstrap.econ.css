@@ -8,6 +8,10 @@ and open the template in the editor.
     Author     : erick
 */
 
+#myModal form {
+    display: contents;
+}
+
 .btn-xs {
     padding: .1rem .3rem;
     font-size: .7rem;
