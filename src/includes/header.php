@@ -108,8 +108,14 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="<?php echo URL; ?>/fornecedor">
-                                    <i class="fa fa-chalkboard-teacher "></i>
+                                    <i class="fa fa-shipping-fast"></i>
                                     Fornecedor
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?php echo URL; ?>/varejista">
+                                    <i class="fa fa-store"></i>
+                                    Varejista
                                 </a>
                             </li>
                         </ul>
