@@ -18,6 +18,7 @@ class Endereco extends DB_DataObject
     public $cep;                            // varchar(10)
     public $latitude;                       // varchar(50)
     public $longitude;                      // varchar(50)
+    public $data_atualizacao;               // datetime
     public $cidade_id;                      // int(4) not_null
 
     /* the code above is auto generated do not remove the tag below */
@@ -31,6 +32,7 @@ class Endereco extends DB_DataObject
                 }
             }
         }
+        $this->data_atualizacao = date('Y-m-d H:i:s');
     }
     
 }

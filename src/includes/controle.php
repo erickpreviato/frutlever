@@ -23,3 +23,7 @@ function show_message() {
     }
     return $msg;
 }
+
+function show_nao_encontrado() {
+    return '<span class="text-muted"><cite>Não Encontrado</cite></span>';
+}

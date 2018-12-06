@@ -21,6 +21,7 @@ class Dados extends DB_DataObject
     public $email;                          // varchar(100)
     public $informacoes;                    // text
     public $logo;                           // varchar(50)
+    public $data_atualizacao;               // datetime
     public $endereco_id;                    // int(4) not_null
 
     /* the code above is auto generated do not remove the tag below */
@@ -34,5 +35,6 @@ class Dados extends DB_DataObject
                 }
             }
         }
+        $this->data_atualizacao = date('Y-m-d H:i:s');
     }
 }

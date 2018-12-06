@@ -21,9 +21,7 @@ class Varejista extends DB_DataObject
         $tpl = new HTML_Template_Sigma(VIEW_DIR . '/varejista');
         $pagina = 'list.tpl.html';
         $tpl->loadTemplateFile($pagina);
-
-        //$i =0;
-
+        
         while ($this->fetch()) {
             $dados = new Dados();
             $dados->get($this->getdados_id());
@@ -33,77 +31,13 @@ class Varejista extends DB_DataObject
             $tpl->setVariable('BTN', $this->getButtons($this->id));
 
             $tpl->parse('row_table');
-            //$i++;
         }
-
-//        if ($i == 0) {
-//            $tpl->setVariable("NONE", "Nenhum registro encontrado.");
-//            $tpl->touchBlock("row_none");
-//            $tpl->hideBlock("datatable");
-//        } else {
-//            $tpl->touchBlock("datatable");
-//        }
 
         $tpl->setVariable('URL', URL);
         $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);
 
         return $tpl->get();
     }
-
-//    function listAjax($cont = 0, $qtdLinhas = 10, $inicio = 0, $pesquisa = '', $colunaOrdena = 0, $direcaoOrdenacao = 'asc') {
-//
-//        $total = $this->count();
-//        $registros = 0;
-//        $ret = array('draw' => intval(0), 'data' => null, 'recordsTotal' => 1, 'recordsFiltered' => 1);
-//
-//        $dados = new Dados();
-//        $this->joinAdd($dados);
-//        $this->selectAdd();
-//        $this->selectAdd("varejista.id, nome, razao_social, cnpj, cpf");
-//        
-//        if ($pesquisa != '') {
-//            $this->whereAdd("nome like '%$pesquisa%'");
-//            $this->whereAdd("razao_social like '%$pesquisa%'", 'OR');
-//            $this->whereAdd("cpf like '%$pesquisa%'", 'OR');
-//            $this->whereAdd("cnpj like '%$pesquisa%'", 'OR');
-//        }
-//
-//        $registros = $this->count();
-//
-//
-//        //ordenação
-//        $nomesColunas = array('nome');
-//        if ($colunaOrdena >= 0 && $colunaOrdena < count($nomesColunas)) {
-//            $this->orderBy($nomesColunas[$colunaOrdena] . ' ' . $direcaoOrdenacao);
-//        }
-//
-//        $this->limit($inicio, $qtdLinhas);
-//        $this->find();
-//
-//        while ($this->fetch()) {
-//
-//            unset($c);
-//
-//            $c[] = $this->nome.$this->razao_social.' ('.$this->cpf.$this->cnpj.')';
-//            $c[] = $this->getButtons($this->id);
-//
-//            $ret['data'][] = $c;
-//        }
-//
-//        if ($registros != 0) {
-//            $ret['recordsTotal'] = $total;
-//            $ret['recordsFiltered'] = $registros;
-//
-//            return json_encode($ret);
-//        } else {
-//            unset($ret);
-//            $ret = array('draw' => 0, 'data' => []);
-//            $ret['recordsTotal'] = $total;
-//            $ret['recordsFiltered'] = 0;
-//            //$ret['data'][] = ;
-//            return json_encode($ret);
-//        }
-//    }
 
     function getButtons($ID) {
 
@@ -138,8 +72,10 @@ class Varejista extends DB_DataObject
 
             if ($dados->cnpj) {
                 $tpl->setVariable('D-NONE-FISICA', 'd-none');
+                $tpl->setVariable('TIPO-PESSOA', 'J');
             } else {
                 $tpl->setVariable('D-NONE-JURIDICA', 'd-none');
+                $tpl->setVariable('TIPO-PESSOA', 'F');
             }
 
             $endereco = new Endereco();
@@ -151,6 +87,15 @@ class Varejista extends DB_DataObject
             $tpl->setVariable('CIDADE', Cidade::getCidade($endereco->getcidade_id(), 'nome'));
 
             $cidade->get($endereco->getcidade_id());
+            
+            $dt = new Dados_telefone();
+            $dt->setdados_id($this->getdados_id());
+            $dt->find();
+            
+            while ($dt->fetch()) {
+                $tpl->setVariable('TEL'.$dt->gettipo(), Telefone::getTelefone($dt->gettelefone_id()));
+            }
+            
         } else {
             $tpl->setVariable('D-NONE-FISICA', '');
             $tpl->setVariable('D-NONE-JURIDICA', 'd-none');
@@ -178,7 +123,7 @@ class Varejista extends DB_DataObject
         $dados->get($this->getdados_id());
 
         foreach ($dados->table() as $key => $value) {
-            $tpl->setVariable(strtoupper($key), isset($dados->$key) ? $dados->$key : '<cite  class="blockquote-footer">Não Encontrado</cite>');
+            $tpl->setVariable(strtoupper($key), isset($dados->$key) ? $dados->$key : show_nao_encontrado());
         }
 
         if ($dados->cnpj) {
@@ -193,7 +138,19 @@ class Varejista extends DB_DataObject
         $endereco->get($dados->getendereco_id());
 
         foreach ($endereco->table() as $key => $value) {
-            $tpl->setVariable(strtoupper($key), isset($endereco->$key) ? $endereco->$key : '<cite  class="blockquote-footer">Não Encontrado</cite>');
+            $tpl->setVariable(strtoupper($key), isset($endereco->$key) ? $endereco->$key : show_nao_encontrado());
+        }
+        
+        for ($i = 1; $i <= 3; $i++) {
+            $dt = new Dados_telefone();
+            $dt->setdados_id($this->getdados_id());
+            $dt->settipo($i);
+            if ($dt->find()) {
+                $dt->fetch();
+                $tpl->setVariable('TEL'.$i, Telefone::getTelefone($dt->gettelefone_id()));
+            } else {
+                $tpl->setVariable('TEL'.$i, show_nao_encontrado());
+            }
         }
 
         $tpl->setVariable('CIDADE', Cidade::getCidade($endereco->cidade_id, 'nome'));

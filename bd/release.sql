@@ -11,3 +11,21 @@
 ALTER TABLE `frutlever`.`dados` 
 ADD COLUMN `nome_fantasia` VARCHAR(200) NULL DEFAULT NULL AFTER `razao_social`,
 ADD COLUMN `nome` VARCHAR(100) NULL DEFAULT NULL AFTER `cnpj`
+
+ALTER TABLE `frutlever`.`propriedade` 
+ADD COLUMN `data_atualizacao` DATETIME NULL DEFAULT NULL AFTER `email`;
+
+ALTER TABLE `frutlever`.`endereco` 
+ADD COLUMN `data_atualizacao` DATETIME NULL DEFAULT NULL AFTER `longitude`;
+
+ALTER TABLE `frutlever`.`cidade` 
+ADD COLUMN `data_atualizacao` DATETIME NULL DEFAULT NULL AFTER `nome`;
+
+ALTER TABLE `frutlever`.`dados` 
+ADD COLUMN `data_atualizacao` DATETIME NULL DEFAULT NULL AFTER `logo`;
+
+ALTER TABLE `frutlever`.`produto` 
+ADD COLUMN `data_atualizacao` DATETIME NULL DEFAULT NULL AFTER `unidade_id`;
+
+ALTER TABLE `frutlever`.`dados_telefone` 
+ADD COLUMN `tipo` INT(11) NOT NULL AFTER `telefone_id`;

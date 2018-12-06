@@ -39,11 +39,27 @@ if (isset($_POST['salvar'])) {
         $endereco->setDados($_POST);
         $endereco->setcidade_id($idCidade);
         $idEndereco = $endereco->insert();
-
+        
         $dados = new Dados();
         $dados->setDados($_POST);
         $dados->setendereco_id($idEndereco);
         $idDados = $dados->insert();
+        
+        if (isset($_POST['tel1']) || isset($_POST['tel2']) || isset($_POST['tel3'])) {
+            for ($i = 1; $i <= 3; $i++) {
+                if (!empty($_POST['tel'.$i])) {
+                    $telefone = new Telefone();
+                    $telefone->setnumero($_POST['tel'.$i]);
+                    $idTelefone = $telefone->insert();
+                    
+                    $dt = new Dados_telefone();
+                    $dt->setdados_id($idDados);
+                    $dt->settelefone_id($idTelefone);
+                    $dt->settipo($i);
+                    $dt->insert();
+                }
+            }
+        }
 
         $fornecedor = new Fornecedor();
         $fornecedor->setdados_id($idDados);
@@ -63,7 +79,35 @@ if (isset($_POST['salvar'])) {
         $dados = new Dados();
         $dados->get($fornecedor->getdados_id());
         $dados->setDados($_POST);
-        $idDados = $dados->update();
+        $dados->update();
+        
+        $dadosTelefone = new Dados_telefone();
+        $dadosTelefone->setdados_id($dados->getid());
+        $dadosTelefone->find();
+        while ($dadosTelefone->fetch()) {
+            $idTelefone = $dadosTelefone->gettelefone_id();
+            $dadosTelefone->delete();
+            
+            $telefone = new Telefone();
+            $telefone->get($idTelefone);
+            $telefone->delete();
+        }
+        
+        if (isset($_POST['tel1']) || isset($_POST['tel2']) || isset($_POST['tel3'])) {
+            for ($i = 1; $i <= 3; $i++) {
+                if (!empty($_POST['tel'.$i])) {
+                    $telefone = new Telefone();
+                    $telefone->setnumero($_POST['tel'.$i]);
+                    $idTelefone = $telefone->insert();
+                    
+                    $dt = new Dados_telefone();
+                    $dt->setdados_id($dados->getid());
+                    $dt->settelefone_id($idTelefone);
+                    $dt->settipo($i);
+                    $dt->insert();
+                }
+            }
+        }
 
         $endereco = new Endereco();
         $endereco->get($dados->getendereco_id());

@@ -29,6 +29,17 @@ Licença Pública Geral GNU para maiores detalhes.
             });
         });
 
+        $('.telefone').mask("(99) 9999-9999?9").on('keyup', function () {  
+            if ($(this).val().indexOf('_') === -1) {
+                if ($(this).val().length === 15) {
+                    $(this).unmask();
+                    $(this).mask("(99) 99999-9999");
+                }
+            } else if ($(this).val().indexOf('_') === 14) {
+                $(this).unmask();
+                $(this).mask("(99) 9999-9999?9");
+            }
+        });
 
         $(".pop").hover(function () {
             $(this).popover('show');
@@ -92,9 +103,9 @@ Licença Pública Geral GNU para maiores detalhes.
                 $('#inputCidade').val($cidade[0]);
             }
         });
-
-        $("input[type=radio]").on('change', function () {
-            if ($(this).val() === 'J') {
+        
+        function alterarPessoa($valor) {
+            if ($valor === 'J') {
                 $('.pessoa_juridica').removeClass('d-none');
                 $('.pessoa_fisica').addClass('d-none');
                 $("#inputCNPJ").attr('required', 'required');
@@ -111,7 +122,13 @@ Licença Pública Geral GNU para maiores detalhes.
                 $("#inputNome").attr('required', 'required');
                 $("#inputCPF").attr('required', 'required');
             }
+        }
+
+        $("input[type=radio]").on('change', function () {
+            alterarPessoa($(this).val());
         });
+        
+        alterarPessoa('{TIPO-PESSOA}');
     });
 
 </script>
@@ -176,7 +193,7 @@ Licença Pública Geral GNU para maiores detalhes.
                         <label for="inputNome">Nome <span class="text-danger"><b>*</b></span></label>
                         <span data-toggle="popover" data-placement="left" data-content='Nome do varejista' class="pop"><i class="fa fa-question-circle"></i></span>
                     </div>
-                    <input type="text" class="form-control" id="inputNome" name="nome" value="{NOME}" required="required" />
+                    <input type="text" class="form-control" id="inputNome" name="nome" value="{NOME}" />
                 </div>
 
                 <div class="form-row">
@@ -185,7 +202,7 @@ Licença Pública Geral GNU para maiores detalhes.
                             <label for="inputCPF">CPF <span class="text-danger"><b>*</b></span></label>
                             <span data-toggle="popover" data-placement="left" data-content='CPF do varejista, se não houver CNPJ' class="pop"><i class="fa fa-question-circle"></i></span>
                         </div>
-                        <input type="text" class="form-control" id="inputCPF" name="cpf" value="{CPF}" required="required" />
+                        <input type="text" class="form-control" id="inputCPF" name="cpf" value="{CPF}" />
                     </div>
 
                     <div class="form-group col-md-6">
@@ -205,7 +222,21 @@ Licença Pública Geral GNU para maiores detalhes.
                 </div>
                 <input type="text" class="form-control" id="inputEmail" name="email" value="{EMAIL}"   />
             </div>
-
+            
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="inputTel1">Telefone principal</label>
+                    <input type="text" class="form-control telefone" id="inputTel1" name="tel1" value="{TEL1}" />
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputTel2">Telefone</label>
+                    <input type="text" class="form-control telefone" id="inputTel2" name="tel2" value="{TEL2}" />
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputTel3">Celular</label>
+                    <input type="text" class="form-control telefone" id="inputTel3" name="tel3" value="{TEL3}" />
+                </div>
+            </div>
 
             <div class="form-group">
                 <label for="inputInformacoes">Informações</label>

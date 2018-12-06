@@ -14,6 +14,8 @@ include_once MODEL_DIR . '/Pais.php';
 include_once MODEL_DIR . '/Estado.php';
 include_once MODEL_DIR . '/Cidade.php';
 include_once MODEL_DIR . '/Endereco.php';
+include_once MODEL_DIR . '/Telefone.php';
+include_once MODEL_DIR . '/Dados_telefone.php';
 
 include_once CONTROLLER_DIR . '/fornecedor.php';
 

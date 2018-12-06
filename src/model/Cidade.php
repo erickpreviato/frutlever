@@ -12,6 +12,7 @@ class Cidade extends DB_DataObject
     public $__table = 'cidade';              // table name
     public $id;                             // int(4) primary_key not_null
     public $nome;                           // varchar(100)
+    public $data_atualizacao;               // datetime
     public $estado_id;                      // int(4) not_null
 
     /* the code above is auto generated do not remove the tag below */
@@ -169,6 +170,7 @@ class Cidade extends DB_DataObject
                 }
             }
         }
+        $this->data_atualizacao = date('Y-m-d H:i:s');
     }
     
     public static function getCidade($id = null, $field = null) {
