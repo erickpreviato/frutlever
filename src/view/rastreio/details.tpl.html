@@ -1,0 +1,135 @@
+<!--
+Copyright © 2017 Seção Técnica de Informática - STI / ICMC <sti@icmc.usp.br>
+
+Este arquivo é parte do programa "Vagas"
+
+Vagas é um software livre; você pode redistribuí-lo e/ou 
+modificá-lo dentro dos termos da Licença Pública Geral GNU como 
+publicada pela Fundação do Software Livre (FSF); na versão 3 da 
+Licença, ou (a seu critério) qualquer versão posterior.
+
+Este programa é distribuído na esperança de que possa ser  útil, 
+mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÃO
+a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
+Licença Pública Geral GNU para maiores detalhes.
+
+Você deve ter recebido uma cópia da Licença Pública Geral GNU junto
+com este programa, Se não, veja <http://www.gnu.org/licenses/>.
+-->
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="addModalLabel">Detalhes do fornecedor</h5>
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <input type="hidden" name="id" value="{ID}" />
+        </div>
+        <div class="modal-body modal-details">
+
+            <!-- BEGIN row_juridico -->
+            <div class="form-group">
+                <label for="inputFornecedor">Fornecedor</label>
+                <p class="f-details">{CNPJ} - {RAZAO_SOCIAL}</p>
+            </div>
+            <div class="form-group">
+                <label for="inputNomeFantasia">Nome fantasia</label>
+                <p class="f-details">{NOME_FANTASIA}</p>
+            </div>
+            <div class="form-group">
+                <label for="inputInscricao">Inscrição Estadual</label>
+                <p class="f-details">{INSCRICAO}</p>
+            </div>
+            <!-- END row_juridico -->
+
+
+            <!-- BEGIN row_fisico -->
+            <div class="form-group">
+                <label for="inputFornecedor">Fornecedor</label>
+                <p class="f-details">{CPF} - {NOME}</p>
+            </div>
+            <div class="form-group">
+                <label for="inputRg">RG</label>
+                <p class="f-details">{RG}</p>
+            </div>
+            <!-- END row_fisico -->
+
+            <div class="form-group">
+                <label for="inputEmail">E-mail</label>
+                <p class="f-details">{EMAIL}</p>
+            </div>
+            
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label for="inputTel1">Telefone principal</label>
+                    <p class="f-details">{TEL1}</p>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputTel2">Telefone</label>
+                    <p class="f-details">{TEL2}</p>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputTel3">Celular</label>
+                    <p class="f-details">{TEL3}</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputInformacoes">Informações</label>
+                <p class="f-details">{INFORMACOES}</p>
+            </div>
+
+            <div class="form-group">
+                <label for="inputLogo">Logo</label>
+                <p class="f-details">{LOGO}</p>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="inputTipo">Tipo</label>
+                    <p class="f-details">{TIPO}</p>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputCEP">CEP</label>
+                    <p class="f-details">{CEP}</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-10">
+                    <label for="inputLogradouro">Logradouro</label>
+                    <p class="f-details">{LOGRADOURO}</p>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="inputNumero">Número</label>
+                    <p class="f-details">{NUMERO}</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="inputLatitude">Latitude</label>
+                    <p class="f-details">{LATITUDE}</p>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputLongitude">Longitude</label>
+                    <p class="f-details">{LONGITUDE}</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="form-group col-md-8">
+                    <label for="inputCidade">Cidade</label>
+                    <p class="f-details">{CIDADE}</p>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputEstado">Estado</label>
+                    <p class="f-details">{ESTADO}</p>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+

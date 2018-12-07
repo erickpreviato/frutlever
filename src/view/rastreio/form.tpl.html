@@ -1,0 +1,319 @@
+<!--
+Copyright © 2017 Seção Técnica de Informática - STI / ICMC <sti@icmc.usp.br>
+
+Este arquivo é parte do programa "Vagas"
+
+Vagas é um software livre; você pode redistribuí-lo e/ou 
+modificá-lo dentro dos termos da Licença Pública Geral GNU como 
+publicada pela Fundação do Software Livre (FSF); na versão 3 da 
+Licença, ou (a seu critério) qualquer versão posterior.
+
+Este programa é distribuído na esperança de que possa ser  útil, 
+mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÃO
+a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
+Licença Pública Geral GNU para maiores detalhes.
+
+                    Você deve ter recebido uma cópia da Licença Pública Geral GNU junto
+                    com este programa, Se não, veja <http://www.gnu.org/licenses/>.
+-->
+<script>
+    $(document).ready(function () {
+
+        $("#inputNome").blur(function () {
+            $.post("{PHP_SELF}", {find_exists: $("#inputNome").val()}).done(function (data) {
+                if (data === 0) {
+                    $(".has-warning").addClass('d-none');
+                } else {
+                    $(".has-warning").removeClass('d-none');
+                }
+            });
+        });
+
+        $('.telefone').mask("(99) 9999-9999?9").on('keyup', function () {
+            if ($(this).val().indexOf('_') === -1) {
+                if ($(this).val().length === 15) {
+                    $(this).unmask();
+                    $(this).mask("(99) 99999-9999");
+                }
+            } else if ($(this).val().indexOf('_') === 14) {
+                $(this).unmask();
+                $(this).mask("(99) 9999-9999?9");
+            }
+        });
+
+        $(".pop").hover(function () {
+            $(this).popover('show');
+        }, function () {
+            $(this).popover('hide');
+        });
+
+        $("#inputSigla").focus();
+
+        $("#inputCep").on('keyup', function () {
+            if ($(this).val().indexOf('_') === -1) {
+                $(".img-carregar-cep").removeClass('d-none');
+                $cep = $(this).val().replace('-', '');
+                $.get("https://viacep.com.br/ws/" + $cep + "/json/", function (data) {
+                    $("#inputLogradouro").val(data['logradouro']);
+                    $("#inputBairro").val(data['bairro']);
+                    $("#inputCidade").val(data['localidade']);
+                    getEstadoPais(data['uf']);
+                    $(".img-carregar-cep").addClass('d-none');
+                });
+            }
+        });
+        $("#inputCep").mask('99999-999');
+        $("#inputCNPJ").mask('99.999.999/9999-99');
+        $("#inputCPF").mask('999.999.999-99');
+
+        function getEstadoPais($sigla) {
+            $.post("{URL}/estado/", {showEstado: $sigla}).done(function (data) {
+                $dados = data.split('--');
+                $('#estado_id').val($dados[0]);
+                $('#pais_id').val($dados[1]);
+            });
+        }
+
+        $("#inputCidade").on('input', function () {
+            if ($(this).val().indexOf(' -- ') > -1) {
+                $cidade = $(this).val().split(' -- ');
+                getEstadoPais($cidade[1]);
+                $.post("{URL}/cidade/", {showCidade: $cidade[0]}).done(function (data) {
+                    $dados = data.split('--');
+                    $('#cidade_id').val($dados[0]);
+                });
+            } else {
+                $.post("{URL}/cidade/", {showCidade: $(this).val()}).done(function (data) {
+                    if (data !== '---') {
+                        $dados = data.split('--');
+                        getEstadoPais($dados[2]);
+                        $('#cidade_id').val($dados[0]);
+                    } else {
+                        $('#estado_id').val(null);
+                        $('#pais_id').val(null);
+                        $('#cidade_id').val(0);
+                    }
+                });
+            }
+        });
+
+        $("#inputCidade").focusout(function () {
+            if ($(this).val().indexOf(' -- ') > -1) {
+                $cidade = $(this).val().split(' -- ');
+                $('#inputCidade').val($cidade[0]);
+            }
+        });
+
+        function alterarPessoa($valor) {
+            if ($valor === 'J') {
+                $('.pessoa_juridica').removeClass('d-none');
+                $('.pessoa_fisica').addClass('d-none');
+                $("#inputCNPJ").attr('required', 'required');
+                $("#inputRazaoSocial").attr('required', 'required');
+                $("#inputNomeFantasia").attr('required', 'required');
+                $("#inputNome").removeAttr('required');
+                $("#inputCPF").removeAttr('required');
+            } else {
+                $('.pessoa_juridica').addClass('d-none');
+                $('.pessoa_fisica').removeClass('d-none');
+                $("#inputCNPJ").removeAttr('required');
+                $("#inputRazaoSocial").removeAttr('required');
+                $("#inputNomeFantasia").removeAttr('required');
+                $("#inputNome").attr('required', 'required');
+                $("#inputCPF").attr('required', 'required');
+            }
+        }
+
+        $("input[type=radio]").on('change', function () {
+            alterarPessoa($(this).val());
+        });
+
+        alterarPessoa('{TIPO-PESSOA}');
+    });
+
+</script>
+
+<div class="d-flex justify-content-between flex-wrap align-items-center border-bottom mb-3" style="width:100%">
+    <h1 class="h2">
+        Gerar Etiqueta 
+    </h1>
+
+</div>
+
+
+<div class="d-flex justify-content-between" style="width:100%">
+    <div class="col-7">
+        <!-- Main content -->
+        <input type="hidden" name="id" value="{ID}" />
+        <div class="modal-body">
+            <p> Campos obrigatórios</p>
+
+            <div class="form-group">
+                <div class="d-flex align-items-center justify-content-between">
+                    <label for="inputGrupo">Grupo <span class="text-danger"><b>*</b></span></label>
+                    <span data-toggle="popover" data-placement="left" data-content='Selecione o grupo de alimentos' class="pop"><i class="fa fa-question-circle"></i></span>
+                </div>
+                <select class="form-control" name="grupo_id" id="grupo_id" required="required">
+                    {OPTION_GRUPOS}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <div class="d-flex align-items-center justify-content-between">
+                    <label for="inputProduto">Produtos <span class="text-danger"><b>*</b></span></label>
+                    <button type="button" class="btn btn-sm btn-dark" name="Adicionar produto"> Adicionar produto </button>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">First</th>
+                            <th scope="col">Last</th>
+                            <th scope="col">Handle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>Larry</td>
+                            <td>the Bird</td>
+                            <td>@twitter</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-6">
+                    <input type="radio" checked="checked" name="lote" value="F"> Lote 
+                </div>
+                <div class="form-group col-6">
+                    <input type="radio" name="lote" value="J"> Lote consolidado
+                </div>
+            </div>             
+
+
+            <div class="form-group">
+                <div class="d-flex align-items-center justify-content-between">
+                    <label for="inputLote">Lote <span class="text-danger"><b>*</b></span></label>
+                    <span data-toggle="popover" data-placement="left" data-content='Lote' class="pop"><i class="fa fa-question-circle"></i></span>
+                </div>
+                <input type="text" class="form-control" id="inputLote" name="lote" value="{LOTE}" required="required" />
+            </div>               
+
+
+            <div class="form-group">
+                <div class="d-flex align-items-center justify-content-between">
+                    <label for="inputNfe">Nota Fiscal Eletrônica <span class="text-danger"><b>*</b></span></label>
+                    <span data-toggle="popover" data-placement="left" data-content='Nfe' class="pop"><i class="fa fa-question-circle"></i></span>
+                </div>
+                <input type="text" class="form-control" id="inputNfe" name="nfe" value="{NFE}" required="required" />
+            </div>               
+
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <label for="inputDataFabricacao">Data de fabricação <span class="text-danger"><b>*</b></span></label>
+                        <span data-toggle="popover" data-placement="left" data-content='Data de fabricação' class="pop"><i class="fa fa-question-circle"></i></span>
+                    </div>
+                    <input type="text" class="form-control" id="inputDataFabricacao" name="data_fabricacao" value="{DATA_FABRICACAO}" required="required" />
+                </div>
+
+                <div class="form-group col-md-6">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <label for="inputDataValidade">Data de validade <span class="text-danger"><b>*</b></span></label>
+                        <span data-toggle="popover" data-placement="left" data-content='Data de validade' class="pop"><i class="fa fa-question-circle"></i></span>
+                    </div>
+                    <input type="text" class="form-control" id="inputDataValidade" name="data_validade" value="{DATA_VALIDADE}" required="required" />
+                </div>               
+            </div>
+
+            <div class="form-group">
+                <div class="d-flex align-items-center justify-content-between">
+                    <label for="inputFornecedor">Fornecedor <span class="text-danger"><b>*</b></span></label>
+                    <span data-toggle="popover" data-placement="left" data-content='Fornecedor' class="pop"><i class="fa fa-question-circle"></i></span>
+                </div>
+                <select class="form-control" name="fornecedor" id="fornecedor" required="required">
+                    {OPTION_FORNECEDOR}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <div class="d-flex align-items-center justify-content-between">
+                    <label for="inputVarejista">Varejista <span class="text-danger"><b>*</b></span></label>
+                    <span data-toggle="popover" data-placement="left" data-content='Varejista' class="pop"><i class="fa fa-question-circle"></i></span>
+                </div>
+                <select class="form-control" name="varejista" id="varejista" required="required">
+                    {OPTION_VAREJISTA}
+                </select>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-5">
+        <div class="modal-header">
+            <h2>Visualização</h2>
+        </div>
+        <div class="modal-body">
+            <div class="shadow p-3 mb-5 bg-white">
+                <div class="form-row">
+                    <div class="col-3 border-right">
+                        <div class="form-group">
+                            <label for="inputDataFabricacao" style="font-family: verdana; font-weight: bold; font-size: 10px;">Data Fabricação</label>
+                            <p style="font-family: verdana; font-size: 10px;">10/10/2018</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDataValidade" style="font-family: verdana; font-weight: bold; font-size: 10px;">Data Validade</label>
+                            <p style="font-family: verdana; font-size: 10px;">01/10/2019</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputLote" style="font-family: verdana; font-weight: bold; font-size: 10px;">Lote</label>
+                            <p style="font-family: verdana; font-size: 10px;">1234</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputNfe" style="font-family: verdana; font-weight: bold; font-size: 10px;">Nfe</label>
+                            <p style="font-family: verdana; font-size: 10px;">56789</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="inputNomeFantasia" style="font-family: verdana; font-weight: bold; font-size: 10px;">Produzido por:</label>
+                            <p style="font-family: verdana; font-size: 10px;">Fulano de tal</p>
+                            <p style="font-family: verdana; font-size: 10px;"><strong>CNPJ: </strong>45.235.856/0001-22</p>
+                            <p style="font-family: verdana; font-size: 10px;">Rua das pitangas 558</p>
+                            <p style="font-family: verdana; font-size: 10px;">São Carlos - SP</p>
+                            <p style="font-family: verdana; font-size: 10px;"><strong>Telefone: </strong>(16) 3373-8891</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputProduto"><strong>Jaca</strong></label>
+                            <p style="font-family: verdana; font-size: 10px;">Peso líquido 1,5Kg</p>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="inputNomeFantasia">Qr Code</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-sm btn-primary" name="gerar_etiquetas" value="gerar">Gerar etiqueta</button>
+        </div>
+    </div>
+</div>
+
