@@ -19,6 +19,22 @@ Licença Pública Geral GNU para maiores detalhes.
 <script>
     $(document).ready(function () {
 
+        $("#produto_id").on('click', function () {
+            if ($('#produto_id option:selected').text() == 'Selecione') {
+                $(".prods").html("-");
+            } else {
+                $(".prods").html($('#produto_id option:selected').text());
+            }
+        });
+        
+        $("#fornecedor_id").on('click', function () {
+            if ($('#fornecedor_id option:selected').text() == 'Selecione') {
+                $(".fornecedor").addClass("d-none");
+            } else {
+                $(".fornecedor").removeClass("d-none");
+            }
+        });
+
         $("#inputNome").blur(function () {
             $.post("{PHP_SELF}", {find_exists: $("#inputNome").val()}).done(function (data) {
                 if (data === 0) {
@@ -160,39 +176,12 @@ Licença Pública Geral GNU para maiores detalhes.
 
             <div class="form-group">
                 <div class="d-flex align-items-center justify-content-between">
-                    <label for="inputProduto">Produtos <span class="text-danger"><b>*</b></span></label>
-                    <button type="button" class="btn btn-sm btn-dark" name="Adicionar produto"> Adicionar produto </button>
+                    <label for="inputProduto">Produto <span class="text-danger"><b>*</b></span></label>
+                    <span data-toggle="popover" data-placement="left" data-content='Selecione o produto' class="pop"><i class="fa fa-question-circle"></i></span>
                 </div>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">First</th>
-                            <th scope="col">Last</th>
-                            <th scope="col">Handle</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <select class="form-control" name="produto_id" id="produto_id" required="required">
+                    {OPTION_PRODUTOS}
+                </select>
             </div>
 
             <div class="form-row">
@@ -246,7 +235,7 @@ Licença Pública Geral GNU para maiores detalhes.
                     <label for="inputFornecedor">Fornecedor <span class="text-danger"><b>*</b></span></label>
                     <span data-toggle="popover" data-placement="left" data-content='Fornecedor' class="pop"><i class="fa fa-question-circle"></i></span>
                 </div>
-                <select class="form-control" name="fornecedor" id="fornecedor" required="required">
+                <select class="form-control" name="fornecedor" id="fornecedor_id" required="required">
                     {OPTION_FORNECEDOR}
                 </select>
             </div>
@@ -290,7 +279,7 @@ Licença Pública Geral GNU para maiores detalhes.
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="form-group">
+                        <div class="fornecedor form-group d-none">
                             <label for="inputNomeFantasia" style="font-family: verdana; font-weight: bold; font-size: 10px;">Produzido por:</label>
                             <p style="font-family: verdana; font-size: 10px;">Fulano de tal</p>
                             <p style="font-family: verdana; font-size: 10px;"><strong>CNPJ: </strong>45.235.856/0001-22</p>
@@ -299,7 +288,7 @@ Licença Pública Geral GNU para maiores detalhes.
                             <p style="font-family: verdana; font-size: 10px;"><strong>Telefone: </strong>(16) 3373-8891</p>
                         </div>
                         <div class="form-group">
-                            <label for="inputProduto"><strong>Jaca</strong></label>
+                            <label for="inputProduto"><strong class="prods">Jaca</strong></label>
                             <p style="font-family: verdana; font-size: 10px;">Peso líquido 1,5Kg</p>
                         </div>
                     </div>

@@ -1,0 +1,117 @@
+<!--
+Copyright © 2018 EC.on Sistemas <contato@econsistemas.com.br>
+
+Este arquivo é parte do programa "Frutlever"
+
+Vagas é um software livre; você pode redistribuí-lo e/ou 
+modificá-lo dentro dos termos da Licença Pública Geral GNU como 
+publicada pela Fundação do Software Livre (FSF); na versão 3 da 
+Licença, ou (a seu critério) qualquer versão posterior.
+
+Este programa é distribuído na esperança de que possa ser  útil, 
+mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÃO
+a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
+Licença Pública Geral GNU para maiores detalhes.
+
+Você deve ter recebido uma cópia da Licença Pública Geral GNU junto
+com este programa, Se não, veja <http://www.gnu.org/licenses/>.
+-->
+<script>
+
+    //necessario porque os botoes sao criados sob demanda durante o carregamento ajax.
+    function rebindEvents() {
+
+        //console.log('Rebinding...');
+        $(".table tr td button").tooltip();
+
+        $(".btn_new").on('click', function () {
+            $("#myModal .modal-title").html('Adicionar produto');
+            $("#myModal .modal-body").html('<center><img src="{URL}/view/img/carregando.gif" /></center>');
+            $("#myModal").modal("show");
+            $.post("{PHP_SELF}", {new : $(this).val()}).done(function (data) {
+                $("#myModal").html(data);
+            });
+        });
+
+        $(".btn_edit").on('click', function () {
+            $("#myModal .modal-title").html('Editar produto');
+            $("#myModal .modal-body").html('<center><img src="{URL}/view/img/carregando.gif" /></center>');
+            $("#myModal").modal("show");
+            $.post("{PHP_SELF}", {edit: $(this).val()}).done(function (data) {
+                $("#myModal").html(data);
+            });
+        });
+
+        $(".btn_view").on('click', function () {
+            $("#myModal .modal-title").html('Detalhes do produto');
+            $("#myModal .modal-body").html('<center><img src="{URL}/view/img/carregando.gif" /></center>');
+            $("#myModal").modal("show");
+            $.post("{PHP_SELF}", {view: $(this).val()}).done(function (data) {
+                $("#myModal").html(data);
+            });
+        });
+
+        $(".btn_del").on('click', function () {
+            $("#myModal .modal-title").html('Excluir produto');
+            $("#myModal .modal-body").html('<center><img src="{URL}/view/img/carregando.gif" /></center>');
+            $("#myModal").modal("show");
+            $.post("{PHP_SELF}", {del: $(this).val()}).done(function (data) {
+                $("#myModal").html(data);
+            });
+        });
+    }
+
+    $(document).ready(function () {
+
+        $('.table').dataTable({
+            "columns": [
+                null,
+                {"bSortable": false, "className": "text-center"}
+            ],
+            "order": [[1, "ASC"]], //definindo a coluna 2 = candidato como ordem inicial
+            "oLanguage": {
+                "sUrl": "{URL}/view/language/pt_BR.txt"
+            },
+            "bSortClasses": true,
+            "processing": true,
+            "serverSide": true,
+            "bDestroy": true,
+            //"displayStart": {DISPLAY_START},
+            "ajax": "{URL}/produto/list/list_ajax.php",
+            "fnDrawCallback": function (oSettings) {
+                //console.log( 'Reloging bind events!' );
+                rebindEvents();//necessario pois os botoes sao criados dinimicamente pelo ajax.
+            }
+        });
+
+        $('.dataTables_paginate').addClass("pagination");
+
+    });
+</script>
+
+<div class="d-flex justify-content-between flex-wrap align-items-center border-bottom mb-3" style="width:100%">
+    <h1 class="h2">
+        Produtos
+    </h1>
+
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <button class="btn_new btn btn-sm btn-outline-primary" name="new" value="new">Cadastrar</button>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover table-sm dt-responsive nowrap" style="width:100%">
+        <thead>
+            <tr>
+                <th>Descrição</th>
+                <th class="text-center table-acao">A&ccedil;&atilde;o</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

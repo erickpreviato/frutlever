@@ -1,11 +1,11 @@
 <?php
+
 /**
  * Table Definition for rastreio
  */
 require_once 'DB/DataObject.php';
 
-class Rastreio extends DB_DataObject 
-{
+class Rastreio extends DB_DataObject {
     ###START_AUTOCODE
     /* the code below is auto generated do not remove the above tag */
 
@@ -26,19 +26,22 @@ class Rastreio extends DB_DataObject
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
-    
+
     function showForm($id = null) {
 
         $tpl = new HTML_Template_Sigma(VIEW_DIR . '/rastreio');
         $pagina = 'form.tpl.html';
         $tpl->loadTemplateFile($pagina);
 
+        $tpl->setVariable('OPTION_GRUPOS', Grupo::getOptions());
+        $tpl->setVariable('OPTION_PRODUTOS', Produto::getOptions());
+        $tpl->setVariable('OPTION_FORNECEDOR', Fornecedor::getOptions());
         
+
         $tpl->setVariable('URL', URL);
         $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);
 
         return $tpl->get();
     }
-    
-    
+
 }

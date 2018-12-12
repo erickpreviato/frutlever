@@ -37,4 +37,10 @@ class Dados extends DB_DataObject
         }
         $this->data_atualizacao = date('Y-m-d H:i:s');
     }
+    
+    public function getDados($id = null, $campo = null) {
+        $dados = new Dados();
+        $dados->get($id);
+        return $dados->$campo;
+    }
 }

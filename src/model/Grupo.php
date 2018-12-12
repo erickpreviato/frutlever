@@ -152,4 +152,35 @@ class Grupo extends DB_DataObject
             }
         }
     }
+    
+    public static function getOptions ($id = null) {
+    
+        $tpl = new HTML_Template_Sigma(VIEW_DIR . '/grupo');
+        $pagina = 'option.tpl.html';
+        $tpl->loadTemplateFile($pagina);
+        
+        $grupo = new Grupo();
+        $grupo->orderBy('descricao', 'ASC');
+        $grupo->find();
+        
+        while ($grupo->fetch()) {
+            $tpl->setVariable('VALUE', $grupo->id);
+            $tpl->setVariable('NAME', $grupo->descricao);
+            $tpl->setVariable('SELECTED', $grupo->id == $id ? 'selected=selected' : '');
+            
+            $tpl->parse('option');
+        }
+
+        $tpl->setVariable('URL', URL);
+        $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);
+
+        return $tpl->get();
+        
+    }
+    
+    public static function getGrupo($id = null, $field = 'descricao') {
+        $grupo = new Grupo();
+        $grupo->get($id);
+        return $grupo->$field;
+    }
 }

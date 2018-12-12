@@ -188,5 +188,29 @@ class Fornecedor extends DB_DataObject {
             }
         }
     }
+    
+    public static function getOptions ($id = null) {
+    
+        $tpl = new HTML_Template_Sigma(VIEW_DIR . '/fornecedor');
+        $pagina = 'option.tpl.html';
+        $tpl->loadTemplateFile($pagina);
+        
+        $fornecedor = new Fornecedor();
+        $fornecedor->find();
+        
+        while ($fornecedor->fetch()) {
+            $tpl->setVariable('VALUE', $fornecedor->id);
+            $tpl->setVariable('NAME', Dados::getDados($fornecedor->dados_id, 'razao_social'));
+            $tpl->setVariable('SELECTED', $fornecedor->id == $id ? 'selected=selected' : '');
+            
+            $tpl->parse('option');
+        }
+
+        $tpl->setVariable('URL', URL);
+        $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);
+
+        return $tpl->get();
+        
+    }
 
 }
