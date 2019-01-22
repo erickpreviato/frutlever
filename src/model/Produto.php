@@ -11,6 +11,7 @@ class Produto extends DB_DataObject
 
     public $__table = 'produto';             // table name
     public $id;                             // int(4) primary_key not_null
+    public $nome;                           // varchar(100)
     public $quantidade;                     // int(4)
     public $codigo_barras;                  // varchar(45)
     public $descricao;                      // text
@@ -98,7 +99,7 @@ class Produto extends DB_DataObject
 
             unset($c);
 
-            $c[] = $this->descricao;
+            $c[] = $this->nome;
             $c[] = $this->getButtons($this->id);
 
             $ret['data'][] = $c;
@@ -145,9 +146,11 @@ class Produto extends DB_DataObject
             }
             $tpl->setVariable('TITULO', 'Alterar dados do produto');
             $tpl->setVariable('OPTION_GRUPOS', Grupo::getOptions($this->grupo_id));
+            $tpl->setVariable('CHECK_UNIDADE', Unidade::getChecks($this->unidade_id));
         } else {
             $tpl->setVariable('TITULO', 'Adicionar produto');
             $tpl->setVariable('OPTION_GRUPOS', Grupo::getOptions());
+            $tpl->setVariable('CHECK_UNIDADE', Unidade::getChecks());
         }
 
         $tpl->setVariable('URL', URL);

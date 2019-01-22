@@ -29,9 +29,8 @@ if (isset($_POST['salvar'])) {
 
     $produto->setDados($_POST);
     
-    //Corrigir
     $produto->setunidade_id(1);
-
+    
     if ($insert) {
         $id = $produto->insert();
         if ($id) {

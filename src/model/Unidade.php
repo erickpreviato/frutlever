@@ -155,5 +155,31 @@ class Unidade extends DB_DataObject {
             }
         }
     }
+    
+    public static function getChecks ($id = null) {
+    
+        $tpl = new HTML_Template_Sigma(VIEW_DIR . '/unidade');
+        $pagina = 'radios.tpl.html';
+        $tpl->loadTemplateFile($pagina);
+        
+        $unidade = new Unidade();
+        $unidade->orderBy('simbolo', 'ASC');
+        $unidade->find();
+        
+        while ($unidade->fetch()) {
+            $tpl->setVariable('VALUE', $unidade->id);
+            $tpl->setVariable('NAME', $unidade->simbolo);
+            $tpl->setVariable('DESCRICAO', $unidade->simbolo);
+            $tpl->setVariable('SELECTED', $unidade->id == $id ? 'selected=selected' : '');
+            
+            $tpl->parse('check');
+        }
+
+        $tpl->setVariable('URL', URL);
+        $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);
+
+        return $tpl->get();
+        
+    }
 
 }

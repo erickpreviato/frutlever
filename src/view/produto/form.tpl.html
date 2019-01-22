@@ -19,6 +19,29 @@ Licença Pública Geral GNU para maiores detalhes.
 <script>
     $(document).ready(function () {
 
+        $("#fileUpload").on('change', function () {
+
+            if (typeof (FileReader) != "undefined") {
+
+                var image_holder = $("#image-holder");
+                image_holder.empty();
+
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $("<img />", {
+                        "src": e.target.result,
+                        "class": "thumb-image",
+                        "width": "150px"
+                    }).appendTo(image_holder);
+                };
+                image_holder.show();
+                reader.readAsDataURL($(this)[0].files[0]);
+                $("#img_camera").addClass('d-none');
+            } else {
+                alert("Imagem não suportada pelo navegador.");
+            }
+        });
+
         $("#inputNome").blur(function () {
             $.post("{PHP_SELF}", {find_exists: $("#inputNome").val()}).done(function (data) {
                 if (data == 0) {
@@ -41,9 +64,16 @@ Licença Pública Geral GNU para maiores detalhes.
 
 </script>
 
+<style>
+    #wrapper > input
+    {
+        display: none;
+    }
+</style>
+
 <!-- Main content -->
 <input type="hidden" name="id" value="{ID}" />
-<div class="modal-dialog" role="document">
+<div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="myModalLabel">{TITULO}</h5>
@@ -51,7 +81,7 @@ Licença Pública Geral GNU para maiores detalhes.
         </div>
         <div class="modal-body">
             <p><span class="text-danger"><b>*</b></span> Campos obrigatórios</p>
-            
+
             <div class="form-group">
                 <div class="d-flex align-items-center justify-content-between">
                     <label for="inputGrupo">Grupo <span class="text-danger"><b>*</b></span></label>
@@ -64,15 +94,77 @@ Licença Pública Geral GNU para maiores detalhes.
 
             <div class="form-group">
                 <div class="d-flex align-items-center justify-content-between">
-                    <label for="inputGrupo">Descrição <span class="text-danger"><b>*</b></span></label>
-                    <span data-toggle="popover" data-placement="left" data-content='Descrição, sujeito a aprovação' class="pop"><i class="fa fa-question-circle"></i></span>
+                    <label for="inputNome">Nome <span class="text-danger"><b>*</b></span></label>
+                    <span data-toggle="popover" data-placement="left" data-content='Nome do FLV' class="pop"><i class="fa fa-question-circle"></i></span>
                 </div>
-                <input type="text" class="form-control" id="inputGrupo" name="descricao" value="{DESCRICAO}"  required="required"  />
+                <input type="text" class="form-control" id="inputNome" name="nome" value="{NOME}"  required="required"  />
+            </div>
+
+            <div class="form-group">
+                <div class="d-flex align-items-center justify-content-between">
+                    <label for="inputQuantidade">Quantidade por porção <span class="text-danger"><b>*</b></span></label>
+                    <span data-toggle="popover" data-placement="left" data-content='1 grama' class="pop"><i class="fa fa-question-circle"></i></span>
+                </div>
+                <input type="text" class="form-control" id="inputQuantidade" name="quantidade" value="{QUANTIDADE}"  required="required"  />
+            </div>
+            <div class="form-group">
+                <div class="d-flex align-items-center justify-content-between">
+                    <label for="inputQuantidade">Embalagem <span class="text-danger"><b>*</b></span></label>
+                    <span data-toggle="popover" data-placement="left" data-content='1 grama' class="pop"><i class="fa fa-question-circle"></i></span>
+                </div>
+                {CHECK_UNIDADE}
+            </div>
+
+            <div class="form-group">
+                <div class="d-flex align-items-center justify-content-between">
+                    <label for="inputQtdePeso">Quantidade/Peso <span class="text-danger"><b>*</b></span></label>
+                    <span data-toggle="popover" data-placement="left" data-content='Quantidade ou peso de acordo com a embalagem' class="pop"><i class="fa fa-question-circle"></i></span>
+                </div>
+                <input type="text" class="form-control" id="inputQtdePeso" name="qtde_peso" value="{QTDE_PESO}"  required="required"  />
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-6">
+                    <div class="form-group">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <label for="inputCodigoBarras">Código de barras <span class="text-danger"><b>*</b></span></label>
+                            <span data-toggle="popover" data-placement="left" data-content='Código de barras desse produtos' class="pop"><i class="fa fa-question-circle"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="inputCodigoBarras" name="codigo_barras" value="{CODIGO_BARRAS}"  required="required"  />
+                    </div>
+                </div>
+                <div class="form-group col-6">
+                    <div class="form-group">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <label for="inputEorigem">E-Origem </label>
+                            <span data-toggle="popover" data-placement="left" data-content='Digitar o e-origem caso tenha' class="pop"><i class="fa fa-question-circle"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="inputEorigrm" name="e_origem" value="{E_ORIGEM}"  />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputDescricao">Descrição</label>
+                <textarea class="form-control" id="inputDescricao" name="descricao" rows="3"></textarea>
             </div>
 
             <div class="form-group has-warning d-none">
                 <p class="text-warning"><b>ALERTA!</b> Esse grupo j&aacute; consta em nossa base de dados.</p>
             </div>
+
+            <div id="wrapper">
+                <label for="fileUpload" id="img_camera">
+                    <img src="../view/img/placeholder.png" width="150px"/>
+                </label><input id="fileUpload" type="file"><br />
+                <div id="image-holder"></div>
+            </div>
+
+            <!--<div class="image-upload">
+                <label for="file-input">
+                    <img src="../view/img/placeholder.png" width="100px"/>
+                </label><input id="file-input" type="file"  />
+            </div>-->
 
         </div>
         <div class="modal-footer">

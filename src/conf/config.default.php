@@ -48,7 +48,7 @@ define('CONTROLLER_DIR', DIR . "/controller");
 define('INCLUDE_DIR', DIR . "/includes");
 
 ################################################ EDITAR A URL ##############
-define('URL', "http://143.107.231.227:8080/frutlever/src");
+define('URL', "http://143.107.231.227/frutlever/src");
 define('HOME', URL);
 define('IMAGE_URL', URL . "/view/img");
 define('CSS_URL', URL . "/view/css");
@@ -68,4 +68,4 @@ $options = &PEAR::getStaticProperty('DB_DataObject','options');
 $config = parse_ini_file('D:/ECon/frutlever/conf/db.ini', TRUE);
 $options = $config['DB_DataObject'];
 
-//include_once INCLUDE_DIR . '/controle.php';
+include_once INCLUDE_DIR . '/controle.php';
