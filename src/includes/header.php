@@ -107,6 +107,12 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" href="<?php echo URL; ?>/fotos">
+                                    <i class="fa fa-camera"></i>
+                                    Imagens
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="<?php echo URL; ?>/produto">
                                     <i class="fa fa-coffee"></i>
                                     Produtos

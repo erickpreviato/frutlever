@@ -35,3 +35,22 @@ ADD COLUMN `nome` VARCHAR(100) NULL DEFAULT NULL AFTER `id`;
 
 ALTER TABLE `frutlever`.`unidade` 
 ADD COLUMN `simbolo` VARCHAR(45) NULL DEFAULT NULL AFTER `descricao`;
+
+ALTER TABLE `frutlever`.`produto` 
+DROP FOREIGN KEY `fk_produto_unidade1`;
+
+ALTER TABLE `frutlever`.`produto` 
+CHANGE COLUMN `id` `id` INT(11) NOT NULL AUTO_INCREMENT ,
+CHANGE COLUMN `unidade_id` `unidade_id` INT(11) NULL DEFAULT NULL ;
+
+DROP TABLE IF EXISTS `frutlever`.`produto_seq` ;
+
+ALTER TABLE `frutlever`.`produto` 
+ADD CONSTRAINT `fk_produto_unidade1`
+  FOREIGN KEY (`unidade_id`)
+  REFERENCES `frutlever`.`unidade` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+ALTER TABLE `frutlever`.`foto` 
+ADD COLUMN `arquivo` VARCHAR(100) NOT NULL AFTER `nome`;
