@@ -9,3 +9,9 @@
 if (isset($_POST['salvar'])) {
     die();
 }
+
+if (isset($_POST['new'])) {
+    $foto = new Foto();
+    echo $foto->showForm();
+    die();
+}

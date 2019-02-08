@@ -29,6 +29,27 @@ class Foto extends DB_DataObject
         return $tpl->get();
     }
     
+    function showForm($id = null) {
+
+        $tpl = new HTML_Template_Sigma(VIEW_DIR . '/foto');
+        $pagina = 'form.tpl.html';
+        $tpl->loadTemplateFile($pagina);
+        
+        if ($id) {
+            foreach ($this->table() as $key => $value) {
+                $tpl->setVariable(strtoupper($key), $this->$key);
+            }
+            $tpl->setVariable('TITULO', 'Alterar dados da foto');
+        } else {
+            $tpl->setVariable('TITULO', 'Adicionar foto');
+        }
+
+        $tpl->setVariable('URL', URL);
+        $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);
+
+        return $tpl->get();
+    }
+    
     public function setDados($post) {
         foreach ($this->table() as $key => $value) {
             foreach ($post as $key_post => $value_post) {

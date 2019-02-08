@@ -1,0 +1,158 @@
+<!--
+Copyright © 2017 Seção Técnica de Informática - STI / ICMC <sti@icmc.usp.br>
+
+Este arquivo é parte do programa "Vagas"
+
+Vagas é um software livre; você pode redistribuí-lo e/ou 
+modificá-lo dentro dos termos da Licença Pública Geral GNU como 
+publicada pela Fundação do Software Livre (FSF); na versão 3 da 
+Licença, ou (a seu critério) qualquer versão posterior.
+
+Este programa é distribuído na esperança de que possa ser  útil, 
+mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÃO
+a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
+Licença Pública Geral GNU para maiores detalhes.
+
+                    Você deve ter recebido uma cópia da Licença Pública Geral GNU junto
+                    com este programa, Se não, veja <http://www.gnu.org/licenses/>.
+-->
+<script>
+    $(document).ready(function () {
+
+        $('.file').on('change', function () {
+            
+            var valor = $(this).attr("valor");
+
+            var options = {
+                //beforeSend: function () {
+                //    $('#status' + valor).html("Iniciando: 0%");
+                //},
+                //uploadProgress: function (event, position, total, percentComplete) {
+                //    $('#status' + valor).attr('class', '');
+                //    $('#status' + valor).html("Percentual completado: " + percentComplete + "%");
+                //},
+                success: function (e) {
+
+                    var Array = e.split('|-|');
+                    //alert("Upload concluido!"+e); 
+
+                    if (Array[0] === "OK") {
+                        alert(Array[1]);
+                    } else {
+                        console.log(e);
+                        if (Array[1] !== undefined) {// erro tratado na aplicação
+                            alert('Erro: ' + Array[1]);
+                        } else {//algum erro do php 
+                            alert('Erro ao submeter o arquivo, por favor, selecione um menor de 2MB e no formato sugerido!');
+                        }
+
+                    }
+                },
+                error: function () {
+                    alert("Erro ao carregar o arquivo");
+                }
+            };
+            $('#form-foto').ajaxForm(options).submit();
+        });
+
+        $("#fileUpload").on('change', function () {
+
+            if (typeof (FileReader) != "undefined") {
+
+                var image_holder = $("#image-holder");
+                image_holder.empty();
+
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $("<img />", {
+                        "src": e.target.result,
+                        "class": "thumb-image",
+                        "width": "150px"
+                    }).appendTo(image_holder);
+                };
+                image_holder.show();
+                reader.readAsDataURL($(this)[0].files[0]);
+                $("#img_camera").addClass('d-none');
+            } else {
+                alert("Imagem não suportada pelo navegador.");
+            }
+        });
+
+        $("#inputNome").blur(function () {
+            $.post("{PHP_SELF}", {find_exists: $("#inputNome").val()}).done(function (data) {
+                if (data == 0) {
+                    $(".has-warning").addClass('d-none');
+                } else {
+                    $(".has-warning").removeClass('d-none');
+                }
+            });
+        });
+
+
+        $(".pop").hover(function () {
+            $(this).popover('show');
+        }, function () {
+            $(this).popover('hide');
+        });
+
+        $("#inputSigla").focus();
+    });
+
+</script>
+
+<style>
+    #fileUpload
+    {
+        display: none;
+    }
+</style>
+
+<!-- Main content -->
+<input type="hidden" name="id" value="{ID}" />
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="myModalLabel">{TITULO}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+            <p><span class="text-danger"><b>*</b></span> Campos obrigatórios</p>
+
+            <div class="form-group">
+                <div class="d-flex align-items-center justify-content-between">
+                    <label for="inputDescricao">Descrição <span class="text-danger"><b>*</b></span></label>
+                    <span data-toggle="popover" data-placement="left" data-content='Descrição, sujeito a aprovação' class="pop"><i class="fa fa-question-circle"></i></span>
+                </div>
+                <input type="text" class="form-control" id="inputDescricao" name="descricao" value="{DESCRICAO}"  required="required"  />
+            </div>
+
+            <form id="form-foto" action="../controller/upload.php?IMG" method="POST" enctype="multipart/form-data">
+                <div class="row" id="wrapper">
+                    <div class="form-group col-lg-12 col-lg-4">
+                        <label for="fileUpload" id="img_camera">
+                            <img src="../view/img/placeholder.png" width="150px"/>
+                        </label>
+                        <input id="fileUpload" name="fileFoto" valor="Foto" class="file" type="file">
+                    </div>
+                    <div id="image-holder"></div>
+                </div>
+            </form>
+
+            <!--<div class="col-xs-12 col-md-5 col-lg-3">
+
+                <div id="wrapper">
+                    <label for="fileUpload" id="img_camera">
+                        <img src="../view/img/placeholder.png" width="150px"/>
+                    </label><input id="fileUpload" type="file"><br />
+                    <div id="image-holder"></div>
+                </div>
+
+            </div>-->
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-sm btn-primary" name="salvar" value="salvar">Salvar</button>
+        </div>
+    </div>
+</div>
