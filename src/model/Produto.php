@@ -1,11 +1,11 @@
 <?php
+
 /**
  * Table Definition for produto
  */
 require_once 'DB/DataObject.php';
 
-class Produto extends DB_DataObject 
-{
+class Produto extends DB_DataObject {
     ###START_AUTOCODE
     /* the code below is auto generated do not remove the above tag */
 
@@ -22,7 +22,7 @@ class Produto extends DB_DataObject
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
-    
+
     public function setDados($post) {
         foreach ($this->table() as $key => $value) {
             foreach ($post as $key_post => $value_post) {
@@ -33,22 +33,22 @@ class Produto extends DB_DataObject
         }
         $this->data_atualizacao = date('Y-m-d H:i:s');
     }
-    
-    public static function getOptions ($id = null) {
-    
+
+    public static function getOptions($id = null) {
+
         $tpl = new HTML_Template_Sigma(VIEW_DIR . '/produto');
         $pagina = 'option.tpl.html';
         $tpl->loadTemplateFile($pagina);
-        
+
         $produto = new Produto();
         $produto->orderBy('descricao', 'ASC');
         $produto->find();
-        
+
         while ($produto->fetch()) {
             $tpl->setVariable('VALUE', $produto->id);
             $tpl->setVariable('NAME', $produto->descricao);
             $tpl->setVariable('SELECTED', $produto->id == $id ? 'selected=selected' : '');
-            
+
             $tpl->parse('option');
         }
 
@@ -56,10 +56,8 @@ class Produto extends DB_DataObject
         $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);
 
         return $tpl->get();
-        
     }
-    
-    
+
     function showAll() {
 
         $tpl = new HTML_Template_Sigma(VIEW_DIR . '/produto');
@@ -139,7 +137,7 @@ class Produto extends DB_DataObject
         $tpl = new HTML_Template_Sigma(VIEW_DIR . '/produto');
         $pagina = 'form.tpl.html';
         $tpl->loadTemplateFile($pagina);
-        
+
         if ($id) {
             foreach ($this->table() as $key => $value) {
                 $tpl->setVariable(strtoupper($key), $this->$key);
@@ -147,11 +145,22 @@ class Produto extends DB_DataObject
             $tpl->setVariable('TITULO', 'Alterar dados do produto');
             $tpl->setVariable('OPTION_GRUPOS', Grupo::getOptions($this->grupo_id));
             $tpl->setVariable('CHECK_UNIDADE', Unidade::getChecks($this->unidade_id));
+
+            $foto = 'tmp_foto_idusuario.jpg';
+            if (file_exists(DIR . '/fotos/produtos/' . $foto)) {
+                $foto = URL . '/fotos/produtos/' . $foto;
+            } else {
+                $foto = URL . '/view/img/placeholder.png';
+            }
         } else {
             $tpl->setVariable('TITULO', 'Adicionar produto');
             $tpl->setVariable('OPTION_GRUPOS', Grupo::getOptions());
             $tpl->setVariable('CHECK_UNIDADE', Unidade::getChecks());
+            $foto = URL . '/view/img/placeholder.png';
         }
+
+
+        $tpl->setVariable('FOTO', $foto);
 
         $tpl->setVariable('URL', URL);
         $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);
@@ -191,4 +200,5 @@ class Produto extends DB_DataObject
 
         return $tpl->get();
     }
+
 }

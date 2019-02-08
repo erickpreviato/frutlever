@@ -19,7 +19,7 @@ if (isset($_FILES['fileFoto'])) {
     //Padrao: ID usuario preenchendo com 0 a esquerda até 8 digitos, data abreviada YYYYMMAA e o tipo FT = foto, CP = CPF ....
     //$nomeArquivo = md5(str_pad($_POST['ID'], 8, "0", STR_PAD_LEFT) . 'FT');
 
-    $nomeArquivo = 'tmp_foto';
+    $nomeArquivo = 'tmp_foto_idusuario';
     
     $erro = arquivo($diretorio, $name, $tipo, $nomeArquivo);
 

@@ -17,6 +17,7 @@ include_once CONTROLLER_DIR . '/produto.php';
 include_once INCLUDE_DIR . '/header.php';
 
 $produto = new Produto();
+$produto->find();
 echo $produto->showAll();
 
 include_once INCLUDE_DIR . '/footer.php';
