@@ -28,12 +28,15 @@ if (isset($_POST['salvar'])) {
         $produto->get($_POST['id']);
 
     $produto->setDados($_POST);
-    
+
     $produto->setunidade_id(1);
-    
+
     if ($insert) {
         $id = $produto->insert();
         if ($id) {
+            if (file_exists('../fotos/produtos/tmp_foto_idusuario.jpg')) {
+                rename('../fotos/produtos/tmp_foto_idusuario.jpg', '../fotos/produtos/idproduto_idusuario.jpg');
+            }
             $_SESSION['t'] = 'success';
             $_SESSION['msg'] = 'Inseriu';
         } else {
