@@ -37,6 +37,7 @@ Licença Pública Geral GNU para maiores detalhes.
                 image_holder.show();
                 reader.readAsDataURL($(this)[0].files[0]);
                 $("#img_camera").addClass('d-none');
+                $("#label_salvar").removeClass('d-none');
                 $("#form-foto").ajaxForm().submit();
             } else {
                 alert("Imagem não suportada pelo navegador.");
@@ -153,6 +154,7 @@ Licença Pública Geral GNU para maiores detalhes.
                             <img src="{FOTO}" width="150px"/>
                         </label><input id="fileUpload" name="fileFoto" type="file"><br />
                         <div id="image-holder"></div>
+                        <label id="label_salvar" class="d-none">Necessário salvar para atualizar a imagem</label>
                     </div>
                     </form>
                 </div>

@@ -23,6 +23,32 @@ class Estado extends DB_DataObject {
         $tpl = new HTML_Template_Sigma(VIEW_DIR . '/estado');
         $pagina = 'list.tpl.html';
         $tpl->loadTemplateFile($pagina);
+        
+        $this->find();
+        while($this->fetch()) {
+            
+            $tpl->setVariable('EXISTE', $this->seExiste($this->id) ? 'class="text-warning"' :  '');
+            
+            
+            $tpl->setVariable('SIGLA', $this->sigla);
+            $tpl->setVariable('NOME', $this->nome);
+            $tpl->setVariable('PAIS', Pais::getPais($this->pais_id, 'codigo'));
+            $tpl->setVariable('BUTTONS', $this->getButtons($this->id));
+            
+            $tpl->parse('row_table');
+        }
+
+        $tpl->setVariable('URL', URL);
+        $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);
+
+        return $tpl->get();
+    }
+    
+    function showAllAjax() {
+
+        $tpl = new HTML_Template_Sigma(VIEW_DIR . '/estado');
+        $pagina = 'list_ajax.tpl.html';
+        $tpl->loadTemplateFile($pagina);
 
         $tpl->setVariable('URL', URL);
         $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);
@@ -200,6 +226,23 @@ class Estado extends DB_DataObject {
 
         return $tpl->get();
         
+    }
+    
+    function seExiste($ID) {
+               
+        $estado = new Estado();
+        $estado->get($ID);
+        
+        $est = new Estado();
+        $est->find();
+        while ($est->fetch()) {
+            if (($est->nome == $estado->nome) && ($est->pais_id == $estado->pais_id) && ($est->id != $estado->id)) {
+                $retorno = true;
+            } else {
+                $retorno = false;
+            }
+        }        
+        return $retorno;
     }
 
 }

@@ -8,8 +8,6 @@
 
 include_once '../conf/config.default.php';
 
-include_once MODEL_DIR . '/Grupo.php';
-
 include_once CONTROLLER_DIR . '/grupo.php';
 
 include_once INCLUDE_DIR . '/header.php';

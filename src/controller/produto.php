@@ -35,7 +35,7 @@ if (isset($_POST['salvar'])) {
         $id = $produto->insert();
         if ($id) {
             if (file_exists('../fotos/produtos/tmp_foto_idusuario.jpg')) {
-                rename('../fotos/produtos/tmp_foto_idusuario.jpg', '../fotos/produtos/idproduto_idusuario.jpg');
+                rename('../fotos/produtos/tmp_foto_idusuario.jpg', '../fotos/produtos/'.$id.'_idusuario.jpg');
             }
             $_SESSION['t'] = 'success';
             $_SESSION['msg'] = 'Inseriu';
@@ -46,6 +46,9 @@ if (isset($_POST['salvar'])) {
     } else {
         $id = $produto->update();
         if ($id) {
+            if (file_exists('../fotos/produtos/tmp_foto_idusuario.jpg')) {
+                rename('../fotos/produtos/tmp_foto_idusuario.jpg', '../fotos/produtos/'.$_POST['id'].'_idusuario.jpg');
+            }
             $_SESSION['t'] = 'success';
             $_SESSION['msg'] = 'Alterou';
         } else {

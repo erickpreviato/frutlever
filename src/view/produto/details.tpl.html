@@ -17,7 +17,7 @@ Você deve ter recebido uma cópia da Licença Pública Geral GNU junto
 com este programa, Se não, veja <http://www.gnu.org/licenses/>.
 -->
 
-<div class="modal-dialog">
+<div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="addModalLabel">Detalhes do produto</h5>
@@ -25,17 +25,43 @@ com este programa, Se não, veja <http://www.gnu.org/licenses/>.
             <input type="hidden" name="id" value="{ID}" />
         </div>
         <div class="modal-body modal-details">
+            <div class="row">
 
-            <div class="form-group">
-                <label for="inputGrupo">Grupo</label>
-                <p class="f-details">{GRUPO}</p>
+                <div class="col-xs-12 col-md-7 col-lg-9">
+
+                    <div class="form-group">
+                        <label for="inputGrupo">Grupo</label>
+                        <p class="f-details">{GRUPO}</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputProduto">Produto</label>
+                        <p class="f-details">{PRODUTO}</p>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="inputCodigoBarras">Código de barras</label>
+                            <p class="f-details">{CODIGO_BARRAS}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputEOrigem">E-Origem</label>
+                            <p class="f-details">{EORIGEM}</p>
+                        </div>
+                    </div>
+                   
+                    <div class="form-group">
+                        <label for="inputProduto">Descrição</label>
+                        <p class="f-details">{DESCRICAO}</p>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-5 col-lg-3">
+                    <div id="image-holder"><img src="{FOTO}" width="150px"/></div>
+                </div>
+
             </div>
-            
-            <div class="form-group">
-                <label for="inputProduto">Produto</label>
-                <p class="f-details">{DESCRICAO}</p>
-            </div>
-      
+
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Fechar</button>

@@ -23,6 +23,18 @@ class Cidade extends DB_DataObject
         $tpl = new HTML_Template_Sigma(VIEW_DIR . '/cidade');
         $pagina = 'list.tpl.html';
         $tpl->loadTemplateFile($pagina);
+        
+        $this->find();
+        while ($this->fetch()) {
+            
+            $tpl->setVariable('EXISTE', $this->seExiste($this->id) ? 'class="text-warning"' :  '');
+            
+            $tpl->setVariable('NOME', $this->nome);
+            $tpl->setVariable('ESTADO', Estado::getEstado($this->estado_id, 'sigla'));
+            $tpl->setVariable('BUTTONS', $this->getButtons($this->id));
+            
+            $tpl->parse('row_table');
+        }
 
         $tpl->setVariable('URL', URL);
         $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);
@@ -30,6 +42,18 @@ class Cidade extends DB_DataObject
         return $tpl->get();
     }
 
+    function showAllAjax() {
+
+        $tpl = new HTML_Template_Sigma(VIEW_DIR . '/cidade');
+        $pagina = 'list.tpl.html';
+        $tpl->loadTemplateFile($pagina);
+
+        $tpl->setVariable('URL', URL);
+        $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);
+
+        return $tpl->get();
+    }
+    
     function listAjax($cont = 0, $qtdLinhas = 10, $inicio = 0, $pesquisa = '', $colunaOrdena = 0, $direcaoOrdenacao = 'asc') {
 
         $total = $this->count();
@@ -215,5 +239,23 @@ class Cidade extends DB_DataObject
         }
         
         return $tpl->get();
+    }
+    
+    
+    function seExiste($ID) {
+               
+        $cidade = new Cidade();
+        $cidade->get($ID);
+        
+        $cid = new Cidade();
+        $cid->find();
+        while ($cid->fetch()) {
+            if (($cid->nome == $cidade->nome) && ($cid->estado_id == $cidade->estado_id) && ($cid->id != $cidade->id)) {
+                $retorno = true;
+            } else {
+                $retorno = false;
+            }
+        }        
+        return $retorno;
     }
 }

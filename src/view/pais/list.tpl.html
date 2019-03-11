@@ -18,8 +18,8 @@ com este programa, Se não, veja <http://www.gnu.org/licenses/>.
 -->
 <script>
 
-    //necessario porque os botoes sao criados sob demanda durante o carregamento ajax.
-    function rebindEvents() {
+    $(document).ready(function () {
+        
         //console.log('Rebinding...');
         $(".table tr td button").tooltip();
 
@@ -58,13 +58,6 @@ com este programa, Se não, veja <http://www.gnu.org/licenses/>.
                 $("#myModal").html(data);
             });
         });
-    }
-
-
-
-
-
-    $(document).ready(function () {
 
         $('.table').dataTable({
             "columns": [
@@ -78,14 +71,7 @@ com este programa, Se não, veja <http://www.gnu.org/licenses/>.
             },
             "bSortClasses": true,
             "processing": true,
-            "serverSide": true,
-            "bDestroy": true,
-            //"displayStart": {DISPLAY_START},
-            "ajax": "{URL}/pais/list/list_ajax.php",
-            "fnDrawCallback": function (oSettings) {
-                //console.log( 'Reloging bind events!' );
-                rebindEvents();//necessario pois os botoes sao criados dinimicamente pelo ajax.
-            }
+            "bDestroy": true
         });
 
         $('.dataTables_paginate').addClass("pagination");
@@ -113,11 +99,13 @@ com este programa, Se não, veja <http://www.gnu.org/licenses/>.
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
+            <!-- BEGIN row_table -->
+            <tr {EXISTE}>
+                <td>{CODIGO}</td>
+                <td>{NOME}</td>
+                <td>{BUTTONS}</td>
             </tr>
+            <!-- END row_table -->
         </tbody>
     </table>
 </div>

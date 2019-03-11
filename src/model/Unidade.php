@@ -181,5 +181,14 @@ class Unidade extends DB_DataObject {
         return $tpl->get();
         
     }
+    
+    public static function getUnidade ($id = null) {
+            
+        $unidade = new Unidade();
+        $unidade->get($id);
+        
+        return $unidade->simbolo;
+        
+    }
 
 }

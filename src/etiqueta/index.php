@@ -8,13 +8,6 @@
 
 include_once '../conf/config.default.php';
 
-include_once MODEL_DIR . '/Rastreio.php';
-include_once MODEL_DIR . '/Grupo.php';
-include_once MODEL_DIR . '/Produto.php';
-include_once MODEL_DIR . '/Fornecedor.php';
-include_once MODEL_DIR . '/Dados.php';
-
-
 include_once CONTROLLER_DIR . '/rastreio.php';
 
 include_once INCLUDE_DIR . '/header.php';

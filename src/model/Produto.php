@@ -63,7 +63,39 @@ class Produto extends DB_DataObject {
         $tpl = new HTML_Template_Sigma(VIEW_DIR . '/produto');
         $pagina = 'list.tpl.html';
         $tpl->loadTemplateFile($pagina);
+               
+        $this->find();
+        while ($this->fetch()) {
+            
+            $foto = $this->id . '_idusuario.jpg';
+            if (file_exists(DIR . '/fotos/produtos/' . $foto)) {
+                $foto = '<img src="'. '../fotos/produtos/' . $foto.'" width="25">';
+            } else {
+                $foto = '<img src="../view/img/placeholder_none.png" width="25">';
+            }
+            
+            $tpl->setVariable('IMAGEM', $foto);
+            $tpl->setVariable('DESCRICAO', $this->nome);
+            $tpl->setVariable('EMBALAGEM', $this->quantidade.' '. Unidade::getUnidade($this->unidade_id));
+            
+            $tpl->setVariable('BUTTONS', $this->getButtons($this->id));
+            
+            $tpl->parse('row_table');
 
+        }
+
+        $tpl->setVariable('URL', URL);
+        $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);
+
+        return $tpl->get();
+    }
+    
+    function showAllAjax() {
+
+        $tpl = new HTML_Template_Sigma(VIEW_DIR . '/produto');
+        $pagina = 'list_ajax.tpl.html';
+        $tpl->loadTemplateFile($pagina);
+        
         $tpl->setVariable('URL', URL);
         $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);
 
@@ -146,7 +178,7 @@ class Produto extends DB_DataObject {
             $tpl->setVariable('OPTION_GRUPOS', Grupo::getOptions($this->grupo_id));
             $tpl->setVariable('CHECK_UNIDADE', Unidade::getChecks($this->unidade_id));
 
-            $foto = 'tmp_foto_idusuario.jpg';
+            $foto = $this->id . '_idusuario.jpg';
             if (file_exists(DIR . '/fotos/produtos/' . $foto)) {
                 $foto = URL . '/fotos/produtos/' . $foto;
             } else {
@@ -178,6 +210,18 @@ class Produto extends DB_DataObject {
             $tpl->setVariable(strtoupper($key), isset($this->$key) ? $this->$key : ' ');
         }
         $tpl->setVariable('GRUPO', Grupo::getGrupo($this->grupo_id, 'descricao'));
+        $tpl->setVariable('PRODUTO', $this->nome);
+        $tpl->setVariable('CODIGO_BARRAS', $this->codigo_barras);
+        $tpl->setVariable('EORIGEM', $this->e_origem);
+
+        $foto = $this->id . '_idusuario.jpg';
+        if (file_exists(DIR . '/fotos/produtos/' . $foto)) {
+            $foto = URL . '/fotos/produtos/' . $foto;
+        } else {
+            $foto = URL . '/view/img/placeholder_none.png';
+        }
+        
+        $tpl->setVariable('FOTO', $foto);
 
         $tpl->setVariable('URL', URL);
         $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);

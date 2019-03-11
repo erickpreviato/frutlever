@@ -6,6 +6,12 @@
  * and open the template in the editor.
  */
 
+function includes(){
+    foreach(glob(MODEL_DIR.'/*.php') as $arquivo){
+        include_once $arquivo;
+    }
+}
+
 function show_message() {
     if (isset($_SESSION['msg'])) {
         $msg = $_SESSION['msg'];
@@ -113,4 +119,67 @@ function arquivo($diretorio, $name, $tipo, $nome) {
     }
 
     return $erro;
+}
+
+
+function send($nomeDest, $emailDest, $nomeFrom, $emailFrom, $texto, $titulo, $replyTo = null, $emailCC = null, $nomeCC = null, $file = null) {
+
+    $mail = new PHPMailer();
+    $mail->IsSMTP(); // Define que a mensagem será SMTP
+    $mail->SMTPDebug = 1;  // Debugar: 1 = erros e mensagens, 2 = mensagens apenas //registrar sempre!
+    //$mail->SMTPAuth = true; // Usa autenticação SMTP? (opcional)
+    $mail->SMTPSecure = 'tls';
+//$mail->Host = "smtp.icmc.usp.br"; // Endereço do servidor SMTP
+    $mail->Host = 'smtp.gmail.com'; // Endereço do servidor SMTP
+//$mail->Port = "587";
+    $mail->Port = '587';
+//$mail->Username = 'sys_sira@icmc.usp.br'; // Usuário do servidor SMTP
+    $mail->Username = 'contato@econsistemas.com.br'; // Usuário do servidor SMTP
+    $mail->Password = ''; // Senha do servidor SMTP
+//$mail->isHTML();
+//----    $mail->addReplyTo($replyTo);
+// Define o remetente
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    $mail->From = $emailFrom; // Seu e-mail
+    $mail->FromName = utf8_decode($nomeFrom); // Seu nome
+// Define os destinatário(s)
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    $mail->AddAddress($emailDest, utf8_decode($nomeDest));
+    //$mail->AddCC($emailCC, utf8_decode($nomeCC)); // Copia
+    //$mail->AddBCC('contato@econsistemas.com.br', 'Administrador'); // Copia oculta
+    //informações para auditoria
+    $assinaturaAudit = md5($emailFrom . '_' . $emailDest . '_FRUTLEVER');
+    $mail->addCustomHeader('FRUTLEVER', $assinaturaAudit);
+
+
+    if ($file) {
+        $mail->addAttachment($file);
+    }
+
+// Define a mensagem (Texto e Assunto)
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    /* Montando a mensagem a ser enviada no corpo do e-mail. */
+    $mensagemHTML = $texto;
+
+//$mensagemHTML .= '<p>Mensagem enviada automaticamente, por favor não responda diretamente.</p>';
+
+    $assunto = utf8_decode('[FrutLeVer] ' . $titulo);
+
+    $mail->IsHTML(true);
+    $mail->Subject = $assunto; // Assunto da mensagem
+    $mail->Body = utf8_decode($mensagemHTML);
+
+// Envia o e-mail
+    if (!$mail->Send()) {
+        $ret = $mail->ErrorInfo();
+    } else {
+        $ret = true;
+    }
+
+
+// Limpa os destinatários e os anexos
+    $mail->ClearAllRecipients();
+    $mail->ClearAttachments();
+
+    return $ret;
 }

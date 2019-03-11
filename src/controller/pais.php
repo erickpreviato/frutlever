@@ -33,6 +33,8 @@ if (isset($_POST['salvar'])) {
         $pais->insert();
         $_SESSION['t'] = 'success';
         $_SESSION['msg'] = 'Inseriu';
+        
+        //send('Cadu', 'cadufavaro@gmail.com', 'Cadu From', 'cadufavaro@gmail.com', 'teste de email', 'Cadastro de Pais');
     } else {
         $pais->update();
         $_SESSION['t'] = 'success';

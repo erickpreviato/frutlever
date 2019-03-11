@@ -8,9 +8,6 @@
 
 include_once '../../conf/config.default.php';
 
-include_once MODEL_DIR . '/Cidade.php';
-include_once MODEL_DIR . '/Endereco.php';
-
 $contador = 1;
 $qtdLinhas = 10;
 $inicio = 0;

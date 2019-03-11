@@ -17,18 +17,42 @@ class Pais extends DB_DataObject {
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
 
-    function showAll() {
+    function showAllAjax() {
 
         $tpl = new HTML_Template_Sigma(VIEW_DIR . '/pais');
-        $pagina = 'list.tpl.html';
+        $pagina = 'list_ajax.tpl.html';
         $tpl->loadTemplateFile($pagina);
-
+        
         $tpl->setVariable('URL', URL);
         $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);
 
         return $tpl->get();
     }
 
+    function showAll() {
+
+        $tpl = new HTML_Template_Sigma(VIEW_DIR . '/pais');
+        $pagina = 'list.tpl.html';
+        $tpl->loadTemplateFile($pagina);
+        
+        $this->find();
+        while ($this->fetch()) {
+            
+            $tpl->setVariable('EXISTE', $this->seExiste($this->id) ? 'class="text-warning"' :  '');
+            
+            $tpl->setVariable('CODIGO', $this->codigo);
+            $tpl->setVariable('NOME', $this->nome);
+            $tpl->setVariable('BUTTONS', $this->getButtons($this->id));
+            
+            $tpl->parse('row_table');
+        }
+
+        $tpl->setVariable('URL', URL);
+        $tpl->setVariable('PHP_SELF', $_SERVER['PHP_SELF']);
+
+        return $tpl->get();
+    }
+    
     function listAjax($cont = 0, $qtdLinhas = 10, $inicio = 0, $pesquisa = '', $colunaOrdena = 0, $direcaoOrdenacao = 'asc') {
 
         $total = $this->count();
@@ -183,5 +207,22 @@ class Pais extends DB_DataObject {
 
         return $tpl->get();
         
+    }
+    
+    function seExiste($ID) {
+               
+        $pais = new Pais();
+        $pais->get($ID);
+        
+        $pai = new Pais();
+        $pai->find();
+        while ($pai->fetch()) {
+            if (($pai->nome == $pais->nome) && ($pai->codigo == $pais->codigo) && ($pai->id != $pais->id)) {
+                $retorno = true; 
+            } else {
+                $retorno = false;
+            }
+        } 
+        return $retorno;
     }
 }

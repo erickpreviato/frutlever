@@ -8,9 +8,6 @@
 
 include_once '../../conf/config.default.php';
 
-include_once MODEL_DIR . '/Estado.php';
-include_once MODEL_DIR . '/Pais.php';
-
 $contador = 1;
 $qtdLinhas = 10;
 $inicio = 0;
